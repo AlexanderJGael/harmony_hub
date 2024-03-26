@@ -40,8 +40,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(routes);
+sequelize.sync()
+    .then(() => {
+        console.log('Database is synched!')
+    })
+    .catch((error) => {
+        console.error('unable to sync!', error);
+    })
 
-sequelize.sync({ force: false }).then(() => {
-  app.listen(PORT, () => console.log('Now listening'));
+app.listen(port, () => {
+    console.log(`Server is running at http://localhost:${port}`);
 });
