@@ -4,9 +4,13 @@ const session = require('express-session');
 const exphbs = require('express-handlebars');
 const routes = require('./controllers');
 const helpers = require('./utils/helpers');
+const { createServer } = require('node:http');
+const { Server } = require('socket.io');
+
 
 const sequelize = require('./config/connection');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
+const io = new Server(server);
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -22,6 +26,10 @@ const sess = {
     db: sequelize
   })
 };
+
+io.on('connection', (socket) => {
+    console.log('a user connected');
+  });
 
 app.use(session(sess));
 
