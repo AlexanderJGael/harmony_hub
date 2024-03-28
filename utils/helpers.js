@@ -1,24 +1,36 @@
 module.exports = {
-    // this function will be used to render user chats
-    renderChats: () => {
-        const socket = io();
-
-        const form = document.getElementById('form');
-        const input = document.getElementById('input');
-        const messages = document.getElementById('messages');
-  
-        form.addEventListener('submit', (e) => {
-          e.preventDefault();
-          if (input.value) {
-            socket.emit('chat message', input.value);
-            input.value = '';
+  socketInit: (io, sequelize) => {
+    io.on('connection', (socket) => {
+      socket.on('chat message', async (msg) => {
+        let result;
+        try {
+          result = await sequelize.models.messages.create({ content: msg });
+        } catch (e) {
+          console.error('Failed to insert message into the database', e);
+          return;
+        }
+        io.emit('chat message', msg, result.lastID);
+        
+        if (!socket.recovered) {
+          // if the connection state recovery was not successful
+          try {
+            const messages = await sequelize.models.messages.findAll({
+              where: {
+                id: {
+                  [Sequelize.Op.gt]: socket.lastID || 0
+                }
+              }
+            });
+            messages.forEach((message) => {
+              socket.emit('chat message', message.content, message.id);
+            });
+          } catch (e) {
+            console.error('Failed to recover the connection state', e);
+            return;
           }
-        });
-  
-        socket.on('chat message', (msg) => {
-          const item = document.createElement('li');
-          item.textContent = msg;
-          messages.appendChild(item);
-          window.scrollTo(0, document.body.scrollHeight);
-        });
-    }};
+        };
+      });
+    });
+
+    // Additional helpers can be added here
+}};
