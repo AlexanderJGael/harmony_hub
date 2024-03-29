@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+    <link rel="stylesheet" href="/css/registration.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Registration</h2>
+        <form action="/register" method="POST">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" class="input-field" required>
+            </div>
+            <div class="form-group">
+                <label for="confirmEmail">Confirm Email</label>
+                <input type="email" id="confirmEmail" name="confirmEmail" class="input-field" required>
+            </div>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" class="input-field" required>
+            </div>
+            <div class="form-group">
+                <label for="confirmUsername">Confirm Username</label>
+                <input type="text" id="confirmUsername" name="confirmUsername" class="input-field" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" class="input-field" required>
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" class="input-field" required>
+            </div>
+            <p id="errorMessage" style="color: red;"></p>
+            <button type="submit" class="button">Register</button>
+        </form>
+    </div>  
+    <script src="/js/registration.js"></script>
+</body>
+</html>
