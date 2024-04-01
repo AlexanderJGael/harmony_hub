@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum - HarmonyHub</title>
+    <link rel="stylesheet" href="/public/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="row">
+                <div class="three columns">
+                    <h1><a href="/">HarmonyHub</a></h1>
+                </div>
+                <div class="nine columns">
+                    <nav>
+                        <a href="/forum">Forum</a> |
+                        {{#if logged_in}}
+                            <a href="/profile">Profile</a> |
+                            <button class="no-button" id="logout">Logout</button>
+                        {{else}}
+                            <a href="/login">Login</a>
+                            <a href="/signup">Sign Up</a>
+                        {{/if}}
+                    </nav>
+                </div>
+            </div>
+        </header>
+        <main>
+            <div class="row">
+                <div class="twelve columns">
+                    <h2>Forum</h2>
+                    <ul class="forum-posts">
+                        {{#each forumPosts}}
+                            <li>
+                                <h3>{{this.title}}</h3>
+                                <p><strong>Author:</strong> {{this.author}}</p>
+                                <p>{{this.content}}</p>
+                            </li>
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
+        </main>
+        <footer>
+        </footer>
+    </div>
+    {{#if logged_in}}
+        <script src="/public/js/script.js"></script>
+    {{/if}}
+</body>
+</html>
