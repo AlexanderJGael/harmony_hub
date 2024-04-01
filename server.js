@@ -14,7 +14,7 @@ const { DataTypes } = require('sequelize');
 const { Model, Sequelize } = require('sequelize');
 
 const app = express();
-const port = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3001;
 
 const server = createServer(app);
 const io = new Server(server);
