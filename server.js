@@ -7,14 +7,11 @@ const routes = require('./controllers');
 const helpers = require('./utils/helpers');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
-const authRoutes = require('./routes/authRoutes');
 
 const sequelize = require('./config/connection');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const { DataTypes } = require('sequelize');
 const { Model, Sequelize } = require('sequelize');
-
-const { error } = require('console');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -39,22 +36,53 @@ app.use(session(sess));
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
-app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/auth', authRoutes);
 app.use(routes);
 
-
-sequelize.sync({ force: false }).then(() => {
-  server.listen(PORT, () => {
-    console.log(`Now listening on https://localhost:${PORT}`);
-    console.log('Database synced');
-  });
-
-  // Initialize Socket.IO
-  helpers.socketInit(io, sequelize);
+sequelize.sync().then(() => {
+  console.log(sequelize.models);
+  console.log('Database synced');
 })
-.catch((error) => {
-  console.error('Failed to sync the database', error);
+.catch((err) => {
+  console.error('Failed to sync the database', err);
+});
+
+  // socket.io
+io.on('connection', (socket) => {
+  console.log('socket connected: ', socket.id);
+  socket.on('chat message', async (msg) => {
+    console.log('message: ' + msg);
+    const { Messages } = ('./config/database');
+
+    let result = null;
+    try {
+      result = await sequelize.models.Messages.create({ content: msg });
+      console.log(result);
+    } catch (e) {
+      console.error('Failed to create message', e);
+      console.error('Error name:', e.name);
+      console.error('Error message:', e.message);
+      return;
+    };
+
+    io.emit('chat message', msg, result.id);
+
+    if (!socket.recovered) {
+      // if the connection state recovery was not successful
+      try {
+        const messages = await Messages.findAll();
+        messages.forEach((message) => {
+          socket.emit('chat message', message.content, message.id);
+        });
+      } catch (e) {
+        console.error('Failed to recover the connection state', e);
+        return;
+      }
+    };
+  });
+});
+    
+server.listen(PORT, () => {
+  console.log(`Now listening on https://localhost:${PORT}`);
 });
