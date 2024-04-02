@@ -1,11 +1,7 @@
-const express = require('express');
+const router = require('express').Router();
 
-const router = express.Router();
+const homeRoutes = require('./homeRoutes');
 
-// Import controllers here
-// const myController = require('./myController');
-
-// Set up  routes here
-// router.use('/my-route', myController);
+router.use('/', homeRoutes);
 
 module.exports = router;
