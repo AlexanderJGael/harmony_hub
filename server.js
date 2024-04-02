@@ -20,9 +20,6 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 const server = createServer(app);
-const io = new Server(server, {
-  connectionStateRecovery: {}
-});
 
 const hbs = exphbs.create({ helpers });
 
@@ -39,6 +36,7 @@ const sess = {
 app.use(session(sess));
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
+app.set('views', path.join(__dirname, 'views'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -55,54 +53,34 @@ sequelize.sync().then(() => {
   console.error('Failed to start the server', e);
 });
 
-const main = async () => {
-  const Messages = sequelize.models.Messages;
+const io = new Server(server, {
+  connectionStateRecovery: {}
+});
+const { createMessage, getMessagesAfterId } = require('./controllers/messageController');
 
-  // socket.io
-  io.on('connection', (socket) => {
-    console.log('socket connected: ', socket.id);
-
-    socket.on('disconnect', () => {
-      console.log('socket disconnected: ', socket.id);
-      socket.reconnected = false;
-    });
-
-    socket.on('reconnect', async () => {
-      console.log('socket reconnected: ', socket.id);
-      socket.reconnected = true;
-
-      if (!socket.recovered && socket.reconnected) {
-        // if the connection state recovery was not successful
-        try {
-          const messages = await Messages.findAll();
-          messages.forEach((message) => {
-            socket.emit('chat message', message.content, message.id);
-          });
-        } catch (e) {
-          console.error('Failed to recover the connection state', e);
-          return;
-        }
-      };
-    });
-
-    socket.on('chat message', async (msg) => {
-      let result;
-      try {
-        result = await Messages.create({ content: msg });
-        console.log(result);
-      } catch (e) {
-        console.error('Failed to create message', e);
-        console.error('Error name:', e.name);
-        console.error('Error message:', e.message);
-        return;
-      }
-
-      const lastMessage = await Messages.findOne({ order: [['id', 'DESC']] });
-      if (lastMessage) {
-        io.emit('chat message', lastMessage.content);
-      };
-    });
+io.on('connection', async (socket) => {
+  socket.on('chat message', async (msg) => {
+    try {
+      const message = await createMessage(msg);
+      io.emit('chat message', msg, message.id);
+    } catch (e) {
+      console.error(e)
+      console.error('Error occurred while sending chat message:', e);
+      socket.emit('error', 'An error occurred while sending your message. Please try again.');
+      return;
+    }
   });
-};
 
-main();
+  if (!socket.recovered) {
+    try {
+      const messages = await getMessagesAfterId(socket.handshake.auth.serverOffset || 0);
+      for (let message of messages) {
+        socket.emit('chat message', message.content, message.id);
+      }
+    } catch (e) {
+      console.error(e)
+      console.error('Error occurred while sending chat messages:', e);
+      socket.emit('error', 'An error occurred while sending your messages. Please try again.');
+    }
+  }
+});
