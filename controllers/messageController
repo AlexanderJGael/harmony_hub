@@ -1,8 +1,8 @@
 const Message = require('../models/message');
 const { Sequelize } = require('sequelize');
 
-exports.createMessage = async (content) => {
-    const message = await Message.create({ content });
+exports.createMessage = async (msg) => {
+    const message = await Message.create({ content: msg });
     return message;
 };
 

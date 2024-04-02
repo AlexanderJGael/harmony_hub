@@ -59,6 +59,11 @@ const io = new Server(server, {
 const { createMessage, getMessagesAfterId } = require('./controllers/messageController');
 
 io.on('connection', async (socket) => {
+  socket.on('hello', (value, callback) => {
+    // once the event is succesffully handled
+    callback();
+  });
+
   socket.on('chat message', async (msg) => {
     try {
       const message = await createMessage(msg);
