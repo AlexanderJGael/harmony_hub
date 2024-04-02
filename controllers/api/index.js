@@ -5,7 +5,7 @@ const postRoutes = require('./postRoutes');
 // Import routes
 
 // Use routes
-router.use('/users', userRoutes);
+router.use('api/user', userRoutes);
 router.use('/posts', postRoutes);
 
 module.exports = router;
