@@ -78,19 +78,12 @@
             }
         });
 
-        socket.on('chat message', (msg) => {
-            if (!msg) {
-                console.error('no message');
-                return;
-            } else {
-                console.log('received', msg);
-            };
-
+        socket.on('chat message', (msg, serverOffset) => {
             const item = document.createElement('li');
             item.textContent = msg;
             messages.appendChild(item);
             window.scrollTo(0, document.body.scrollHeight);
-            socket.auth.serverOffset = data.id;
+            socket.auth.serverOffset = serverOffset;
             });
     </script>
 </body>
