@@ -104,10 +104,10 @@ const main = async () => {
   });
 
   //each worker will listen on a distinct port
-  const port = process.env.PORT;
+  const port = process.env.PORT || 3001;
 
   server.listen(port, () => {
-    console.log(`App listening on port ${PORT}!`);
+    console.log(`App listening on port ${port}!`);
   });
 };
 
