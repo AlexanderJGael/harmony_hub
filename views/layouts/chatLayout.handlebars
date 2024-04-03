@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat</title>
+    <title>HarmonyHub Chat</title>
     <style>
         body { 
           margin: 0; 
@@ -59,10 +59,25 @@
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
+        const toggleButton = document.getElementById('toggle-btn');
+
+        toggleButton.addEventListener('click', (e) => {
+          e.preventDefault();
+          if (socket.connected) {
+            toggleButton.innerText = 'Connect';
+            socket.disconnect();
+          } else {
+            toggleButton.innerText = 'Disconnect';
+            socket.connect();
+          }
+        });
+
         const socket = io({
             auth: {
                 serverOffset: 0
-            }
+            },
+            ackTimeout: 10000,
+            retries: 3,
         });
 
         const form = document.getElementById('form');
@@ -77,6 +92,7 @@
                 input.value = '';
             }
         });
+        
 
         socket.on('chat message', (msg, serverOffset) => {
             const item = document.createElement('li');
