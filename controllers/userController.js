@@ -1,8 +1,5 @@
 const bcrypt = require('bcrypt');
-const express = require('express');
-const router = express.Router();
 const User = require('../models/User');
-const userController = require('../controllers/userController');
 
 exports.register = async (req, res) => {
   try {
@@ -66,8 +63,3 @@ exports.updateUserProfile = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
-
-router.post('/register', userController.register);
-router.post('/login', userController.login);
-
-module.exports = router;

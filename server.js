@@ -33,7 +33,6 @@ const { Messages, User } = require('./config/database');
 
 const main = async () => {
   const app = express();
-  const PORT = process.env.PORT || 3001;
   const hbs = exphbs.create({ helpers });
   const server = createServer(app);
 
@@ -104,7 +103,7 @@ const main = async () => {
   });
 
   //each worker will listen on a distinct port
-  const port = process.env.PORT || 3001;
+  const port = process.env.PORT;
 
   server.listen(port, () => {
     console.log(`App listening on port ${port}!`);

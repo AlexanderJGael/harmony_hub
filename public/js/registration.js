@@ -27,7 +27,7 @@ function sendRegistrationData(email, username, password) {
     })
     .then(response => {
         if (response.ok) {
-            window.location.href = '/login.hbs'; 
+            window.location.href = '/login'; 
         } else {
             errorMessage.textContent = 'Failed to register. Please try again later.';
         }
