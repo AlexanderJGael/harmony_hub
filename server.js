@@ -56,7 +56,6 @@ const main = async () => {
   app.use(routes);
 
   sequelize.sync().then(() => {
-    console.log(sequelize.models);
     console.log('Database synced');
   })
   .catch((e) => {
@@ -68,18 +67,31 @@ const main = async () => {
     // set up the adsapter on each worker thread
     adapter: createAdapter(),
   });
-  const { createMessage, getMessagesAfterId } = require('./controllers/messageController');
+  const { createMessage, getMessagesAfterId, getMessages } = require('./controllers/messageController');
 
   io.on('connection', async (socket) => {
+    console.log('a user connected');
     socket.on('hello', (value, callback) => {
       // once the event is succesffully handled
       callback();
     });
 
-    socket.on('chat message', async (msg) => {
+    socket.on('request chat log', async () => {
+      try {
+        const messages = await getMessages();
+
+        socket.emit('chat log', messages);
+      } catch (e) { 
+        console.error('Error occurred while sending chat log:', e);
+        socket.emit('error', 'An error occurred while sending your chat log. Please try again.');
+      }
+    });
+
+    socket.on('chat message', async (msg, userID) => {
+      console.log('message: ' + msg);
       try {
         const message = await createMessage(msg);
-        io.emit('chat message', msg, message.id);
+        socket.broadcast.emit('chat message', msg, message.id);
       } catch (e) {
         console.error(e)
         console.error('Error occurred while sending chat message:', e);

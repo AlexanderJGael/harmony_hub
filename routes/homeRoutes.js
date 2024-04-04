@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const path = require('path');
-const { User } = require('../models');
 const withAuth = require('../utils/auth');
 
 router.get('/', async (req, res) => {
@@ -20,9 +19,9 @@ router.get('/forum', async (req, res) => {
     }
 );
 
-router.get('/registration', async (req, res) => {
+router.get('/register', async (req, res) => {
     try {
-        res.render('registration');
+        res.render('register');
     } catch (err) {
         res.status(500).json(err);
     }
@@ -48,7 +47,7 @@ router.get('/profile', async (req, res) => {
 // update the router.get() method to include withAuth as the second argument
 router.get('/chat', async (req, res) => {
     try {
-        res.render('chat', { layout: 'chatLayout' });
+        res.render('chat');
     } catch (err) {
         res.status(500).json(err);
     }

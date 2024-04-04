@@ -26,6 +26,9 @@ exports.login = async (req, res) => {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
 
+    // If user found and password matches, set userID in session
+    req.session.userId = user.id;
+
     // If user found and password matches, return success message
     res.status(200).json({ message: 'Login successful', user });
   } catch (error) {

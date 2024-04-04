@@ -1,3 +1,4 @@
+document.addEventListener('DOMContentLoaded', function() {
 // Function to handle login button click
 function handleLoginClick() {
     const usernameOrEmail = document.getElementById('username-email').value;
@@ -30,7 +31,7 @@ function handleLoginClick() {
 
 // Function to handle registration button click
 function handleRegisterClick() {
-    window.location.href = '/registration.hbs';
+    window.location.href = '/register';
 }
 
 // Event listener for login button click
@@ -40,3 +41,4 @@ loginButton.addEventListener('click', handleLoginClick);
 // Event listener for registration button click
 const registerButton = document.getElementById('register-button');
 registerButton.addEventListener('click', handleRegisterClick);
+});
