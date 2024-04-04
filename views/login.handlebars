@@ -1,36 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="/css/login.css">
-</head>
-
-<body>
-    <div class="container">
-        <h2>Login</h2>
+<div id="login-container" class="container">
+    <div id="login-form" class="form-container border bg-light p-5 rounded" style="width: 500px;">
+        <div class="header text-center">
+            <h2>Login</h2>
+        </div>
         <form action="/login" method="POST">
             <div class="form-group">
                 <label for="usernameOrEmail">Username or Email:</label>
-                <input type="text" id="username-email" name="usernameOrEmail" required>
+                <input class="form-control" type="text" id="username-email" name="usernameOrEmail" required>
             </div>
             <div class="form-group">
                 <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
+                <input class="form-control" type="password" id="password" name="password" required>
             </div>
-            <button id="login-button" type="submit">Login</button>
-            <a id="register-button" href="/register">Register</a>
+            <button id="login-button" type="submit" class="btn btn-primary btn-block">Login</button>
+            <a id="register-button" href="/register" class="btn btn-light btn-block">Register</a>
             {{#if noUser}}
-            <p class="warning">User does not exist. Please register a new account.</p>
+            <p class="text-danger">User does not exist. Please register a new account.</p>
             {{/if}}
             {{#if incorrectPassword}}
-            <p class="warning">Incorrect password. Please try again.</p>
+            <p class="text-danger">Incorrect password. Please try again.</p>
             {{/if}}
         </form>
     </div>
-    <script src="/js/login.js"></script>
-</body>
-
-</html>
+</div>
+<script src="/js/login.js"></script>

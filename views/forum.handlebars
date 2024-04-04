@@ -1,26 +1,26 @@
-<body>
-    <main>
-        <div class="card align-items-center">
-            <div class="card-header">
-                <h2>Forum</h2>
-            </div>
-            
-
-            <ul class="forum-posts">
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 text-center">
+            <h2 class="my-3">Forum</h2>
+            <ul class="list-group mb-3">
                 {{#each forumPosts}}
-                    <li>
-                        <h3>{{this.title}}</h3>
-                        <p><strong>Author:</strong> {{this.author}}</p>
-                        <p>{{this.content}}</p>
+                    <li class="list-group-item">
+                        <h3 class="mb-1">{{this.title}}</h3>
+                        <p class="mb-1"><strong>Author:</strong> {{this.author}}</p>
+                        <p class="mb-1">{{this.content}}</p>
                     </li>
                 {{/each}}
             </ul>
+            <nav aria-label="Forum pages">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item"><a class="page-link" href="/forum?page=1">Harmony Plaza</a></li>
+                    <li class="page-item"><a class="page-link" href="/forum?page=2">Music Theories</a></li>
+                    <li class="page-item"><a class="page-link" href="/forum?page=3">Instrumental Insights</a></li>
+                </ul>
+            </nav>
         </div>
-    </main>
-    <footer>
-    </footer>
-    {{#if logged_in}}
-        <script src="/public/js/script.js"></script>
-    {{/if}}
-</body>
-</html>
+    </div>
+</div>
+{{#if logged_in}}
+    <script src="/public/js/forum.js"></script>
+{{/if}}
