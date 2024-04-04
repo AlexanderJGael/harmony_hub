@@ -7,8 +7,14 @@
                 </div>
                 <div class="nine columns">
                     <nav>
-                        <a href="/views/profile.handlebars">Profile</a>
-                        <button class="no-button" id="logout">Logout</button>
+                        {{#if logged_in}}
+                            <a href="/profile">Profile</a>
+                            <button class="no-button" id="logout">Logout</button>
+                            <p>Welcome, {{user.username}}</p> <!-- Display username here -->
+                        {{else}}
+                            <a href="/login">Login</a>
+                            <a href="/registration">Sign Up</a>
+                        {{/if}}
                     </nav>
                 </div>
             </div>
@@ -29,4 +35,9 @@
             </div>
         </main>
     </div>
-{{/if}}
+    {{#if logged_in}}
+        <script src="/js/script.js"></script>
+    {{/if}}
+</body>
+</html>
+
