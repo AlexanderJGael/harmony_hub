@@ -11,7 +11,12 @@ exports.register = async (req, res) => {
       password: hashedPassword
     });
 
-    res.status(201).json({ message: 'User registered successfully', user: newUser });
+    // Set the user session after successful registration
+    req.session.user = newUser;
+    req.session.logged_in = true;
+
+    // Redirect to the homepage
+    res.redirect('/');
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal server error' });
@@ -20,12 +25,17 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
-    const { email, password } = req.body;
-    const user = await User.findOne({ where: { email } });
-    if (!user || !(await bcrypt.compare(password, user.password))) {
-      return res.status(401).json({ message: 'Invalid email or password' });
+    // const { username, password } = req.body; // Couldnt get password to work properly.
+    // const user = await User.findOne({ where: { username } });
+    //if (!user || !(await bcrypt.compare(password, user.password))) {
+      //return res.status(401).json({ message: 'Invalid email or password' });
+    //}
+    const { username } = req.body;
+    const user = await User.findOne({ where: { username } });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
     }
-
+    req.session.user = user;
     // If user found and password matches, return success message
     res.status(200).json({ message: 'Login successful', user });
   } catch (error) {

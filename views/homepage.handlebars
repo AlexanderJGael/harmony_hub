@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HarmonyHub</title>
     <link rel="stylesheet" href="/css/style.css">
+</head>
 <body>
     <div class="container">
         <header>
@@ -17,6 +18,7 @@
                         {{#if logged_in}}
                             <a href="/profile">Profile</a>
                             <button class="no-button" id="logout">Logout</button>
+                            <p>Welcome, {{user.username}}</p> <!-- Display username here -->
                         {{else}}
                             <a href="/login">Login</a>
                             <a href="/registration">Sign Up</a>
