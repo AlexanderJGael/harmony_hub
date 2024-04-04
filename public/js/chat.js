@@ -4,20 +4,20 @@ const socket = io({
     },
 });
 
-const form = document.getElementById('chat-form');
-const input = document.getElementById('chat-input');
-const messages = document.getElementById('chat-messages');
+const form = $('#chat-form');
+const input = $('#chat-input');
+const messages = $('#chat-messages');
 
-form.addEventListener('submit', (e) => {
+form.on('submit', (e) => {
     e.preventDefault();
-    if (input.value) {
+    if (input.val()) {
       const item = document.createElement('li');
-      item.textContent = `You: ${input.value}`;
-      messages.appendChild(item);
+      item.textContent = `You: ${input.val()}`;
+      messages.append(item);
       window.scrollTo(0, document.body.scrollHeight);
 
-      socket.emit('chat message', input.value, socket.auth.userID);
-      input.value = '';
+      socket.emit('chat message', input.val(), socket.auth.userID);
+      input.val('');
     }
 });
 
@@ -28,16 +28,44 @@ socket.on('connect', () => {
 socket.on('chat log', (log) => {
   log.forEach((msg) => {
     const item = document.createElement('li');
-    item.textContent = `${msg}`;
-    messages.appendChild(item);
+    item.className = "d-flex text-start p-2";
+
+    const img = document.createElement('img');
+    img.src = msg.avatar;
+    img.alt = msg.username;
+    img.className = "rounded-circle";
+    img.style.width = "32px";
+    img.style.height = "32px";
+    item.appendChild(img);
+
+    const p = document.createElement('p');
+    p.className = "m-2";
+    p.textContent = `${msg.username}: ${msg.message}`;
+    item.appendChild(p);
+
+    messages.append(item);
   });
   window.scrollTo(0, document.body.scrollHeight);
 });
 
 socket.on('chat message', (msg, serverOffset) => {
-    const item = document.createElement('li');
-    item.textContent = `${msg}`;
-    messages.appendChild(item);
-    window.scrollTo(0, document.body.scrollHeight);
-    socket.auth.serverOffset = serverOffset;
-    });
+  const item = document.createElement('li');
+  item.className = "d-flex text-start p-2";
+
+  const img = document.createElement('img');
+  img.src = msg.avatar;
+  img.alt = msg.username;
+  img.className = "rounded-circle";
+  img.style.width = "32px";
+  img.style.height = "32px";
+  item.appendChild(img);
+
+  const p = document.createElement('p');
+  p.className = "m-2";
+  p.textContent = `${msg.username}: ${msg.message}`;
+  item.appendChild(p);
+
+  messages.append(item);
+  window.scrollTo(0, document.body.scrollHeight);
+  socket.auth.serverOffset = serverOffset;
+});

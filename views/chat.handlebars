@@ -1,7 +1,22 @@
-<ul id="chat-messages"></ul>
-<form id="chat-form" action="">
-  <input id="chat-input" autocomplete="off" /><button>Send</button>
-</form>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<div id="chat-container" class="m-3 d-flex flex-column align-items-center" style="height: 80vh;">
+  <div class="header text-center">
+    <h2 class="font-weight-bold text-dark text-center">Community Chat</h2>
+  </div>
+  <p class="text-center">Welcome to the chat!</p>
+  <p class="text-center">Please be respectful to others.</p>
+  <p class="text-center">Enjoy!</p>
+
+  <div "message_div" class="border" style="height: 100%; width: 98vw; overflow-y: auto;">
+    <ul id="chat-messages" class="list-unstyled p-2 flex-column w-100">
+    </ul>
+  </div>
+
+  <form id="chat-form" class="fixed-bottom d-flex w-100 align-items-center p-2" style="margin-bottom: 24px;" action="">
+    <input id="chat-input" type="text" class="flex-grow-1 p-2 pl-3 m-1 rounded-pill border border-dark" autocomplete="off" placeholder="Message..." /><button action="submit" class="btn btn-primary rounded p-2 m-1">Send</button>
+  </form>
+</div>
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/chat.js"></script>

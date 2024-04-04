@@ -24,8 +24,15 @@ header {
 /* Change the color of the body */
 body {
     background-color: #f5f5f5;
-    min-height: 100vh;
-    min-width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+/*     min-height: 100vh;
+    min-width: 100vw; */
+}
+
+main {
+    max-height: 100vh;
+    margin-bottom: 24px;
 }
 
 /* Change the color of the button */
