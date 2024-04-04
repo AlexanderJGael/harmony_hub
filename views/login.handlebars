@@ -7,15 +7,15 @@
         </div>
         <form action="/login" method="POST">
             <div class="form-group">
-                <label for="usernameOrEmail">Username or Email:</label>
-                <input class="form-control" type="text" id="username-email" name="usernameOrEmail" required>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
             </div>
             <div class="form-group">
                 <label for="password">Password:</label>
                 <input class="form-control" type="password" id="password" name="password" required>
             </div>
-            <button id="login-button" type="submit" class="btn btn-primary btn-block">Login</button>
-            <a id="register-button" href="/register" class="btn btn-light btn-block">Register</a>
+            <button type="submit" id="login-button">Login</button>
+            <a href="/registration">Register</a>
             {{#if noUser}}
             <p class="text-danger">User does not exist. Please register a new account.</p>
             {{/if}}

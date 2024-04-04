@@ -12,19 +12,34 @@ const os = require('os');
 const cluster = require('cluster');
 const { createAdapter, setupPrimary } = require('@socket.io/cluster-adapter');
 
+// Load environment variables from .env file
+dotenv.config();
+
+// Import routes
+const routes = require('./controllers');
+const loginRoutes = require('./routes/loginRoutes');
+const userRoutes = require('./routes/userRoutes');
+const profileRoutes = require('./routes/profileRoutes');
+const homeRoutes = require('./routes/homeRoutes');
+
+// Check if the current process is the primary process
 if (cluster.isPrimary) {
-  const numCPUSs = os.cpus().length;
-  // create one worker per availble core
-  for (let i = 0; i < numCPUSs; i++) {  
+  const numCPUs = os.cpus().length;
+
+  // Create one worker per available core
+  for (let i = 0; i < numCPUs; i++) {
     cluster.fork({
-        PORT: 3000 + i
-      });
+      PORT: process.env.PORT || 3000 + i,
+    });
   }
 
-  // set up the adapter on the primary thread
+  // Set up the adapter on the primary thread
   return setupPrimary();
 }
 
+// Create Express app
+const app = express();
+const server = createServer(app);
 const sequelize = require('./config/connection');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const { DataTypes } = require('sequelize');
@@ -38,95 +53,63 @@ const main = async () => {
   const hbs = exphbs.create({ helpers });
   const server = createServer(app);
 
-  const sess = {
-    secret: 'Super secret secret',
-    cookie: { secure: true },
-    resave: false,
-    saveUninitialized: true,
-    store: new SequelizeStore({
-      db: sequelize
-    })
-  };
+// Configure Handlebars as template engine
+const hbs = exphbs.create();
+app.engine('handlebars', hbs.engine);
+app.set('view engine', 'handlebars');
+app.set('views', path.join(__dirname, 'views'));
 
-  app.use(session(sess));
-  app.engine('handlebars', hbs.engine);
-  app.set('view engine', 'handlebars');
-  app.set('views', path.join(__dirname, 'views'));
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
-  app.use(express.static(path.join(__dirname, 'public')));
-  app.use(routes)
+// Set up session middleware
+const sessionMiddleware = session({
+  secret: process.env.SESSION_SECRET || 'Super secret secret',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    maxAge: 24 * 60 * 60 * 1000, // 1 day
+  },
+});
+app.use(sessionMiddleware);
 
-  sequelize.sync().then(() => {
-    console.log('Database synced');
-  })
-  .catch((e) => {
-    console.error('Failed to start the server', e);
-  });
+// Parse incoming requests with JSON payloads
+app.use(express.json());
 
-  const io = new Server(server, {
-    connectionStateRecovery: {},
-    // set up the adsapter on each worker thread
-    adapter: createAdapter(),
-  });
-  const { createMessage, getMessagesAfterId, getMessages } = require('./controllers/messageController');
+// Parse incoming requests with URL-encoded payloads
+app.use(express.urlencoded({ extended: true }));
 
-  io.on('connection', async (socket) => {
-    console.log('a user connected');
-    socket.on('hello', (value, callback) => {
-      // once the event is succesffully handled
-      callback();
-    });
+// Serve static files from the 'public' directory
+app.use(express.static(path.join(__dirname, 'public')));
 
-    socket.on('request chat log', async () => {
-      try {
-        const messages = await getMessages();
+// Mount routes
+app.use(routes);
+app.use('/', loginRoutes);
+app.use('/', userRoutes);
+app.use('/profiles', profileRoutes);
+app.use('/', homeRoutes);
 
-        socket.emit('chat log', messages);
-      } catch (e) { 
-        console.error('Error occurred while sending chat log:', e);
-        socket.emit('error', 'An error occurred while sending your chat log. Please try again.');
-      }
-    });
+// Synchronize the session store
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
+const sequelize = require('./config/connection');
+const sessionStore = new SequelizeStore({ db: sequelize });
+sessionStore.sync();
 
-    socket.on('chat message', async (msg, clientOffset, callback) => {
-      console.log('message: ' + msg);
-      try {
-        const message = await createMessage({ content: msg, client_offset: clientOffset });
-        callback();
-        socket.emit('chat message', msg, message.id, clientOffset);
-        callback();
-      } catch (e) {
-        if (e instanceof Sequelize.ValidationError) {
-          console.error('Validation errors:', e.errors);
-        } else {
-        console.error('Error occurred while sending chat message:', e);
-        socket.emit('error', 'An error occurred while sending your message. Please try again.');
-        };
-      };
-      callback();
-    });
+// Initialize Socket.IO with the HTTP server
+const io = new Server(server, {
+  adapter: createAdapter(),
+});
 
-    if (!socket.recovered) {
-      try {
-        const messages = await getMessagesAfterId(socket.handshake.auth.serverOffset || 0);
-        for (let message of messages) {
-          socket.emit('chat message', message.content, message.id);
-        }
-      } catch (e) {
-        console.error(e)
-        console.error('Error occurred while sending chat messages:', e);
-        socket.emit('error', 'An error occurred while sending your messages. Please try again.');
-      };
-    };
-  });
+// Handle Socket.IO connections
+io.use((socket, next) => {
+  sessionMiddleware(socket.request, socket.request.res || {}, next);
+});
 
-  //each worker will listen on a distinct port
-  const port = process.env.PORT;
+io.on('connection', (socket) => {
+  // Handle socket events
+});
 
-  server.listen(port, () => {
-    console.log(`App listening on port ${port}!`);
-  });
-};
+// Define the port number
+const PORT = process.env.PORT || 3000;
 
-main();
+// Start the server
+server.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});

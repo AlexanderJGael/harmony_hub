@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
 // Function to handle login button click
 function handleLoginClick() {
-    const usernameOrEmail = document.getElementById('username-email').value;
+    const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
     // Send a POST request to the server to authenticate the user
@@ -10,8 +10,10 @@ function handleLoginClick() {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ username: usernameOrEmail, password: password })
-    })
+        body: JSON.stringify({ username: username, password: password })
+    },
+    console.log(username)
+    )
     .then(response => {
         if (response.ok) {
             window.location.href = '/homepage';
@@ -29,16 +31,6 @@ function handleLoginClick() {
     });
 }
 
-// Function to handle registration button click
-function handleRegisterClick() {
-    window.location.href = '/register';
-}
-
 // Event listener for login button click
 const loginButton = document.getElementById('login-button');
 loginButton.addEventListener('click', handleLoginClick);
-
-// Event listener for registration button click
-const registerButton = document.getElementById('register-button');
-registerButton.addEventListener('click', handleRegisterClick);
-});
