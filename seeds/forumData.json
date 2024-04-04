@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1,
+        "content": "Welcome to the HarmonyHub Forum! Feel free to start discussions, ask questions, and connect with other musicians.",
+        "AuthorId": 1,
+        "createdAt": "April 1, 2024"
+    },
+    {
+        "id": 2,
+        "content": "Looking for collaborators for a new music project. Any takers?",
+        "AuthorId": 2,
+        "createdAt": "April 2, 2024"
+    },
+    {
+        "id": 3,
+        "content": "What's your favorite music production software and why?",
+        "AuthorId": 3,
+        "createdAt": "April 3, 2024"
+    }
+]
