@@ -9,23 +9,27 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <!-- Header -->
+
     <header>
-        <!-- Navigation bar -->
         <nav>
-            <!-- Add navigation links here -->
+            <a href="/">Home</a> |
+            <a href="/views/forum.handlebars">Forum</a>
+            {{#if logged_in}} |
+                <a href="/views/profile.handlebars">Profile</a> |
+                <button class="no-button" id="logout">Logout</button>
+            {{else}}
+                <a href="/views/login.handlebars">Login</a>
+                <a href="/views/registration.handlebars">Signup</a>
+            {{/if}}
         </nav>
     </header>
 
-    <!-- Main content -->
     <main>
         {{{body}}}
     </main>
 
-    <!-- Footer -->
     <footer>
-        <!-- Add footer content here -->
+        <p>&copy; 2024 HarmonyHub. All rights reserved.</p>
     </footer>
 
 </body>
-</html>
