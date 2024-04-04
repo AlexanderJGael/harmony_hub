@@ -1,6 +1,6 @@
-const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
-const User = require('./User');
+const { Model, DataTypes } = require("sequelize");
+const sequelize = require("../config/connection");
+const User = require("./User");
 
 class Blog extends Model {}
 
@@ -13,7 +13,7 @@ Blog.init(
             autoIncrement: true,
         },
         title: {
-            type: DataTypes.STRING(255),
+            type: DataTypes.STRING,
             allowNull: false,
         },
         content: {
@@ -23,20 +23,21 @@ Blog.init(
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: User,
-                key: 'id',
+                model: "User",
+                key: "id",
             },
         },
         createdAt: {
             type: DataTypes.DATE,
+            allowNull: false,
             defaultValue: DataTypes.NOW,
-        },
+        },    
     },
     {
         sequelize,
-        modelName: 'Blog',
-        tableName: 'blogs',
         timestamps: false,
+        freezeTableName: true,
+        modelName: "blog",
     }
 );
 
