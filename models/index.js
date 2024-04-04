@@ -1,6 +1,7 @@
 const User = require("./User"); 
 const Blog = require("./blog");
 const Forum = require("./forum");
+const Messages = require("./message");
 
 User.hasMany(Blog, {
   foreignKey: "user_id",
@@ -20,11 +21,13 @@ Forum.belongsTo(User, {
   foreignKey: "user_id",
 });
 
-module.exports = { User, Blog, Forum };
-const User = require('./User');
-const Messages = require('./message');
+User.hasMany(Messages, {
+  foreignKey: "user_id",
+  onDelete: "CASCADE",
+});
 
-User.associate(Messages);
-Messages.associate(User);
+Messages.belongsTo(User, {
+  foreignKey: "user_id",
+});
 
 module.exports = { User, Messages, Blog, Forum };

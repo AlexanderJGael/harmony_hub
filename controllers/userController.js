@@ -18,6 +18,16 @@ exports.register = async (req, res) => {
   }
 };
 
+exports.authenticateUser = async (req, res, next) => {
+  const user = await User.fineOne({ where: { username } });
+  if (user && await bcrypt.compare(password, user.password)) {
+    return user;
+  } else {
+    throw new Error('Invalid username or password');
+  };
+};
+
+
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;

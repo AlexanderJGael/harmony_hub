@@ -61,4 +61,21 @@ User.init(
   }
 );
 
+module.exports = (sequelize, DataTypes) => {
+  const User = sequelize.define("User", {
+    id: DataTypes.INTERGER,
+    username: DataTypes.STRING,
+    email: DataTypes.STRING,
+    password: DataTypes.STRING,
+  });
+
+  User.associate = function(models) {
+    User.hasMany(models.Message, {
+      foreignKey: "userId",
+    });
+  };
+
+  return User;
+}
+
 module.exports = User;

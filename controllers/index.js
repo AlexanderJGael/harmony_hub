@@ -1,13 +1,9 @@
-const router = require('express').Router();
+const userController = require('./userController');
+const messageController = require('./messageController');
+const profileController = require('./profileController');
 
-const homeRoutes = require('../routes/homeRoutes');
-const userRoutes = require('../routes/userRoutes');
-const profileRoutes = require('../routes/profileRoutes');
-
-router.use('/', homeRoutes);
-router.use('/user', userRoutes);
-router.use('/profile', profileRoutes);
-router.use('/login', userRoutes);
-router.use('/register', userRoutes);
-
-module.exports = router;
+module.exports = {
+    userController: exports.userController,
+    messageController: exports.messageController,
+    profileController: exports.profileController,
+    };

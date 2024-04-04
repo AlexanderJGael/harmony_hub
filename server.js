@@ -3,7 +3,8 @@ const express = require('express');
 const session = require('express-session');
 const dotenv = require('dotenv');
 const exphbs = require('express-handlebars');
-const routes = require('./controllers');
+const router = require('./controllers');
+const routes = require('./routes')
 const helpers = require('./utils/helpers');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
@@ -29,6 +30,7 @@ const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const { DataTypes } = require('sequelize');
 const { Model, Sequelize } = require('sequelize');
 const { Messages, User } = require('./config/database');
+const { authenticateUser } = require('./controllers/userController');
 
 
 const main = async () => {
@@ -38,7 +40,7 @@ const main = async () => {
 
   const sess = {
     secret: 'Super secret secret',
-    cookie: {},
+    cookie: { secure: true },
     resave: false,
     saveUninitialized: true,
     store: new SequelizeStore({
@@ -53,7 +55,7 @@ const main = async () => {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
   app.use(express.static(path.join(__dirname, 'public')));
-  app.use(routes);
+  app.use(routes)
 
   sequelize.sync().then(() => {
     console.log('Database synced');
@@ -87,17 +89,22 @@ const main = async () => {
       }
     });
 
-    socket.on('chat message', async (msg, userID) => {
+    socket.on('chat message', async (msg, clientOffset, callback) => {
       console.log('message: ' + msg);
       try {
-        const message = await createMessage(msg);
-        socket.broadcast.emit('chat message', msg, message.id);
+        const message = await createMessage({ content: msg, client_offset: clientOffset });
+        callback();
+        socket.emit('chat message', msg, message.id, clientOffset);
+        callback();
       } catch (e) {
-        console.error(e)
+        if (e instanceof Sequelize.ValidationError) {
+          console.error('Validation errors:', e.errors);
+        } else {
         console.error('Error occurred while sending chat message:', e);
         socket.emit('error', 'An error occurred while sending your message. Please try again.');
-        return;
+        };
       };
+      callback();
     });
 
     if (!socket.recovered) {
