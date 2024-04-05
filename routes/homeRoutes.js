@@ -34,9 +34,9 @@ router.get('/forum', async (req, res) => {
             res.redirect('/login');
         } else {
             res.render('forum', {logged_in:req.session.logged_in, user, posts:user.posts});
-        } catch (err) {
+        }} catch (err) {
         res.status(500).json(err);
-    };
+    }
 });
 
 router.get('/register', async (req, res) => {
