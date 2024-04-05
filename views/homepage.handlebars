@@ -1,41 +1,56 @@
-<div class="container">
-        <header>
-            <div class="row">
-                <div class="three columns">
-                    <h1><a href="/">HarmonyHub</a></h1>
-                </div>
-                <div class="nine columns">
-                    <nav>
-                        {{#if logged_in}}
-                            <a href="/profile">Profile</a>
-                            <button class="no-button" id="logout">Logout</button>
-                            <p>Welcome, {{user.username}}</p> <!-- Display username here -->
-                        {{else}}
-                            <a href="/login">Login</a>
-                            <a href="/registration">Sign Up</a>
-                        {{/if}}
-                    </nav>
-                </div>
-            </div>
-        </header>
-        <main>
-            <div class="row">
-                <div class="twelve columns">
-                    <h2>Blog Posts</h2>
-                    {{#each posts}}
-                        <div class="post">
-                            <h3>{{this.title}}</h3>
-                            <p><strong>Author:</strong> {{this.author}}</p>
-                            <p><strong>Date:</strong> {{this.date}}</p>
-                            <p>{{this.content}}</p>
-                        </div>
-                    {{/each}}
-                </div>
-            </div>
-        </main>
+    <div class="jumbotron text-center">
+        <h1 class="display-4">Welcome to our Blog and Forum</h1>
+        <p class="lead">Explore, share, and learn with our community.</p>
     </div>
-    {{#if logged_in}}
-        <script src="/js/script.js"></script>
-    {{/if}}
-</html>
 
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <h2 class="mb-4 text-center">Blog Posts</h2>
+            {{#if posts}}
+                {{#with posts.[0]}}
+                    <div class="post featured-post card mb-3 mx-auto text-center">
+                        <div class="card-body">
+                            <h2 class="card-title">{{this.title}}</h2>
+                            <p class="card-text"><strong>Author:</strong> {{this.author}}</p>
+                            <p class="card-text"><strong>Date:</strong> {{this.date}}</p>
+                            <p class="card-text">{{this.content}}</p>
+                        </div>
+                    </div>
+                {{/with}}
+                {{#each posts}}
+                    {{#unless @first}}
+                        <div class="post card mb-3 mx-auto text-center">
+                            <div class="card-body">
+                                <h3 class="card-title">{{this.title}}</h3>
+                                <p class="card-text"><strong>Author:</strong> {{this.author}}</p>
+                                <p class="card-text"><strong>Date:</strong> {{this.date}}</p>
+                                <p class="card-text">{{this.content}}</p>
+                            </div>
+                        </div>
+                    {{/unless}}
+                {{/each}}
+            {{/if}}
+        </div>
+
+            <div class="col-md-6">
+                <h2 class="mb-4 text-center">Forum Discussions</h2>
+                {{#each forums}}
+                    <div class="card mb-3 mx-auto" style="width: fit-content;">
+                        <div class="card-body text-center">
+                            <h3 class="card-title">{{this.title}}</h3>
+                            <p class="card-text"><strong>Author:</strong> {{this.author}}</p>
+                            <p class="card-text"><strong>Date:</strong> {{this.date}}</p>
+                            <p class="card-text">{{this.preview}}</p>
+                            <a href="/forums/{{this.id}}" class="btn btn-primary">Read More</a>
+                        </div>
+                    </div>
+                {{/each}}
+            </div>
+        </div>
+    </main>
+    <footer>
+    </footer>
+</div>
+{{#if logged_in}}
+    <script src="/js/script.js"></script>
+{{/if}}

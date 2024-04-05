@@ -6,30 +6,60 @@
     <title>HarmonyHub</title>
     <link rel="stylesheet" href="/css/jass.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link rel="stylesheet" href="/css/style.css">
 </head>
-<body>
 
-    <header>
-        <nav>
-            <a href="/">Home</a> |
-            <a href="/forum">Forum</a>
-            {{#if logged_in}} |
-                <a href="/profile">Profile</a> |
-                <button class="no-button" id="logout">Logout</button>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="/js/login.js"></script>
+<!-- Header -->
+
+<header class="p-3 bg-dark text-bg-dark">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center">
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li><a href="/" class="nav-link px-2 text-light">Home</a></li>
+                <li><a href="/blog" class="nav-link px-2 text-light">Blog</a></li>
+                <li><a href="/forum" class="nav-link px-2 text-light">Forum</a></li>
+                <li><a href="/about" class="nav-link px-2 text-light">About</a></li>
+            </ul>
+
+            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+                <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Search..." aria-label="Search">
+            </form>
+
+            <div class="text-end">
+            {{#if logged_in}}
+            <a href="/profile">
+                <button type="button" class="btn btn-outline-light me-2">Profile</button>
+            </a>
+            <a href="/chat">
+                <button type="button" class="btn btn-outline-light me-2">Chat</button>
+            </a>
+                <p>Welcome, {{user.username}}</p> <!-- Display username here -->
             {{else}}
-                <a href="/login">Login</a>
-                <a href="/registration">Signup</a>
+                <a href="/login">
+                    <button type="button" class="btn btn-outline-light me-2">Login</button>
+                </a>
+                <a href="/register">
+                    <button type="button" class="btn btn-warning">Sign Up</button>
+                </a>
             {{/if}}
-        </nav>
-    </header>
+            </div>
+        </div>
+    </div>
+</header>
 
+<body>
+    <!-- Main content -->
     <main>
         {{{body}}}
     </main>
 
-    <footer>
-        <p>&copy; 2024 HarmonyHub. All rights reserved.</p>
+    <footer class="fixed-bottom d-flex justify-content-center align-items-center bg-light">
+        <p class="mb-0">&copy; 2024 HarmonyHub. All rights reserved.</p>
     </footer>
 
 </body>
+
+</html>

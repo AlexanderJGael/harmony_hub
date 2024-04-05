@@ -1,3 +1,4 @@
+document.addEventListener('DOMContentLoaded', function() {
 // Function to handle login button click
 function handleLoginClick(event) {
     event.preventDefault();
@@ -30,6 +31,7 @@ function handleLoginClick(event) {
         document.getElementById('login-warning').innerText = 'Network error. Please check your connection.';
     });
 }
+});
 
 // Event listener for login button click
 const loginButton = document.getElementById('login-button');

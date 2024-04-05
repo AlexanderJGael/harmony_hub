@@ -1,43 +1,25 @@
 <div class="container">
-    <header>
-        <div class="row">
-            <div class="three columns">
-                <h1><a href="/">HarmonyHub</a></h1>
-            </div>
-            <div class="nine columns">
-                <nav>
-                    <a href="/views/forum.handlebars">Forum</a> |
-                    <a href="/categories">Categories</a> |
-                    {{#if logged_in}}
-                        <a href="/views/profile.handlebars">Profile</a> |
-                        <button class="no-button" id="logout">Logout</button>
-                    {{else}}
-                    {{/if}}
-                </nav>
-            </div>
-        </div>
-    </header>
-    <main>
-        <div class="row">
-            <div class="twelve columns">
-                <h2>Forum</h2>
-                <ul class="forum-posts">
-                    {{#each forumPosts}}
-                        <li>
-                            <h3>{{this.title}}</h3>
-                            <p><strong>Author:</strong> {{this.author}}</p>
-                            <p>{{this.content}}</p>
-                        </li>
-                    {{/each}}
+    <div class="row justify-content-center">
+        <div class="col-12 text-center">
+            <h2 class="my-3">Forum</h2>
+            <ul class="list-group mb-3">
+                {{#each forumPosts}}
+                    <li class="list-group-item">
+                        <h3 class="mb-1">{{this.title}}</h3>
+                        <p class="mb-1"><strong>Author:</strong> {{this.author}}</p>
+                        <p class="mb-1">{{this.content}}</p>
+                    </li>
+                {{/each}}
+            </ul>
+            <nav aria-label="Forum pages">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item"><a class="page-link" href="/forum?page=1">Harmony Plaza</a></li>
+                    <li class="page-item"><a class="page-link" href="/forum?page=2">Music Theories</a></li>
+                    <li class="page-item"><a class="page-link" href="/forum?page=3">Instrumental Insights</a></li>
                 </ul>
-                <div class="pagination">
-                    <a href="/forum?page=1">Harmony Plaza</a>
-                    <a href="/forum?page=2">Music Theories</a>
-                    <a href="/forum?page=3">Instrumental Insights</a>
-                </div>
-            </div>
+            </nav>
         </div>
-    </main>
+    </div>
 </div>
 {{#if logged_in}}
     <script src="/public/js/forum.js"></script>
