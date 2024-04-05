@@ -3,18 +3,13 @@ const User = require('../models/User');
 const { Sequelize } = require('sequelize');
 const bcrypt = require('bcrypt');
 
-exports.createMessage = async (req, res) => {
+exports.createMessage = async (msg) => {
     try {
-        const message = await Message.create({
-            content: req.body.content,
-            client_offset: req.body.client_offset,
-            avatar: req.body.avatar,
-            username: req.body.username,
-            userId: req.body.userId // assuming the userId is sent in the request body
-        });
-        res.status(201).json(message);
+        const message = await Message.create({ content: msg });
+        return message;
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error(error);
+        throw error;
     }
 };
 

@@ -1,35 +1,54 @@
+const Message = require('../models/Message');
+const User = require('../models/User');
+const { Sequelize } = require('sequelize');
+const bcrypt = require('bcrypt');
+
 module.exports = {
-/*   socketInit: (io, sequelize) => {
-    io.on('connection', (socket) => {
-      socket.on('chat message', async (msg) => {
-        let result;
-        try {
-          result = await Messages.create({ content: msg });
-        } catch (e) {
-          console.error('Failed to insert message into the database', e);
-          return;
-        }
-        io.emit('chat message', msg, result.id);
-        
-        if (!socket.recovered) {
-          // if the connection state recovery was not successful
-          try {
-            const messages = await Messages.findAll({
-              where: {
-                id: {
-                  [Sequelize.Op.gt]: socket.lastID || 0
-                }
-              }
-            });
-            messages.forEach((message) => {
-              socket.emit('chat message', message.content, message.id);
-            });
-          } catch (e) {
-            console.error('Failed to recover the connection state', e);
-            return;
-          }
-        };
+  createMessage: async (msg) => {
+      try {
+          const message = await Message.create({ content: msg });
+          return message;
+      } catch (error) {
+          console.error(error);
+          throw error;
+      }
+  },
+  
+  getMessages: async () => {
+      const messages = await Message.findAll({
+          include: [{
+              model: User,
+              attributes: ['username']
+          }],
       });
-    }); */
-    // Additional helpers can be added here
+      return messages;
+  },
+  
+  getMessagesAfterId: async (id) => {
+      const messages = await Message.findAll({
+          where: {
+              id: {
+                  [Sequelize.Op.gt]: id
+              }
+          },
+          include: [{
+              model: User,
+              attributes: ['username']
+          }],
+      });
+      return messages;
+  },
+  
+getMessagesByUser: async (userId) => {
+      const messages = await Message.findAll({
+          where: {
+              userId: userId
+          },
+          include: [{
+              model: User,
+              attributes: ['username']
+          }],
+      });
+      return messages;
+  },
 };

@@ -13,28 +13,28 @@ const { createAdapter, setupPrimary } = require('@socket.io/cluster-adapter');
 // Load environment variables from .env file
 dotenv.config();
 
-const main = async () => {
-  // Import routes
-  const loginRoutes = require('./routes/loginRoutes');
-  const userRoutes = require('./routes/userRoutes');
-  const profileRoutes = require('./routes/profileRoutes');
-  const homeRoutes = require('./routes/homeRoutes');
+// Import routes
+const loginRoutes = require('./routes/loginRoutes');
+const userRoutes = require('./routes/userRoutes');
+const profileRoutes = require('./routes/profileRoutes');
+const homeRoutes = require('./routes/homeRoutes');
 
-  // Check if the current process is the primary process
-  if (cluster.isPrimary) {
-    const numCPUs = os.cpus().length;
-
-    // Create one worker per available core
-    for (let i = 0; i < numCPUs; i++) {
-      cluster.fork({
-        PORT: process.env.PORT || 3000 + i,
-      });
-    }
-
-    // Set up the adapter on the primary thread
-    return setupPrimary();
+// Check if the current process is the primary process
+if (cluster.isPrimary) {
+  const numCPUs = os.cpus().length;
+  
+  // Create one worker per available core
+  for (let i = 0; i < numCPUs; i++) {
+    cluster.fork({
+      PORT: process.env.PORT || 3000 + i,
+    });
   }
+  
+  // Set up the adapter on the primary thread
+  return setupPrimary();
+}
 
+const main = async () => {
   // Create Express app
   const app = express();
   const hbs = exphbs.create({ helpers });
@@ -56,6 +56,7 @@ const main = async () => {
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     },
   });
+
   app.use(sessionMiddleware);
 
   // Parse incoming requests with JSON payloads
@@ -77,56 +78,55 @@ const main = async () => {
   const sessionStore = new SequelizeStore({ db: sequelize });
   sessionStore.sync();
 
-
-  const { Sequelize } = require('sequelize');
-  const { createMessage } = require('./models/Message');
   // Initialize Socket.IO with the HTTP server
   const io = new Server(server, {
-      adapter: createAdapter(),
+    connectionStateRecovery: {},
+    adapter: createAdapter(),
   });
 
   // Handle Socket.IO connections
-  io.use((socket, next) => {
+/*   io.use((socket, next) => {
     sessionMiddleware(socket.request, socket.request.res || {}, next);
-  });
+  }); */
 
-  io.on('connection', (socket) => {
-    // Handle socket events
-  });
-
-  io.on('chat message', async (msg) => {
-    socket.on('chat message', async (msg) => {
-      let result;
-      try {
-      result = await createMessage({ content: msg });
-      } catch (e) {
-      // TODO handle the failure
-      return;
-      }
-      io.emit('chat message', msg, result.id);
+  io.on('connection', async (socket) => {
+    console.log('A user connected');
+    socket.on('disconnect', () => {
+      console.log('User disconnected');
     });
 
+    socket.on('chat message', async (msg) => {
+      console.log('Message received:', msg);
+      try {
+        const message = await helpers.createMessage(msg);
+        socket.broadcast.emit('chat message', msg, message.id);
+        console.log('Message created');
+      } catch (e) {
+        console.error(e);
+        socket.emit('chat message', 'An error occurred while creating the message');
+        return;
+      }
+    });
+  
     if (!socket.recovered) {
       // if the connection state recovery was not successful
       try {
-      const messages = await Message.findAll({
-        where: {
-        id: {
-          [Sequelize.Op.gt]: socket.handshake.auth.serverOffset || 0
-        }
-        }
-      });
+      const messages = await helpers.getMessagesAfterId({ id: 0 });
       messages.forEach(message => {
-        socket.emit('chat message', message.content, message.id);
+        socket.broadcast.emit('chat message', message.content, message.id);
       });
       } catch (e) {
-      // something went wrong
+        console.error(e);
+        socket.emit('chat message', 'An error occurred while fetching the chat log');
       }
-    }
+    };
   });
 
+
+
+
   // Define the port number
-  const PORT = process.env.PORT || 3000;
+  const PORT = process.env.PORT || 3001;
 
   // Start the server
   server.listen(PORT, () => {
