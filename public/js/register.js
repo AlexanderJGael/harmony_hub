@@ -39,7 +39,8 @@ function sendRegistrationData(email, username, password) {
 }
 
 // Function to handle registration process
-function register() {
+function register(event) {
+    event.preventDefault();
     errorMessage.textContent = '';
 
     // Checks to see if fields are filled and if they match each other.

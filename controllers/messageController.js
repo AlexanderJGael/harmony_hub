@@ -1,4 +1,4 @@
-const Message = require('../models/message');
+const Message = require('../models/Message');
 const User = require('../models/User');
 const { Sequelize } = require('sequelize');
 const bcrypt = require('bcrypt');
