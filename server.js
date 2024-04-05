@@ -68,11 +68,12 @@ const main = async () => {
   // Serve static files from the 'public' directory
   app.use(express.static(path.join(__dirname, 'public')));
 
-  // Mount routes
-  app.use('/', loginRoutes);
-  app.use('/', userRoutes);
-  app.use('/profiles', profileRoutes);
-  app.use('/', homeRoutes);
+// Mount routes
+app.use(routes);
+//app.use('/api/login', loginRoutes);
+//app.use('/api/user', userRoutes);
+//app.use('/api/profiles', profileRoutes);
+//app.use('/', homeRoutes);
 
   // Synchronize the session store
   const sessionStore = new SequelizeStore({ db: sequelize });

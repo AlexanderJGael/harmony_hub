@@ -6,17 +6,17 @@ router.get('/', async (req, res) => {
     try {
         const user = req.session.user;
         const welcomeMessage = user ? `Welcome, ${user.username}` : 'Welcome';
-        res.render('homepage');
-    } catch (err) {
-        res.status(500).json(err);
-    }
-});
+        res.render('homepage', {logged_in:req.session.logged_in, user, posts:user.posts});
+     } catch (err) {
+         res.status(500).json(err);
+     }
+ });
 
 router.get('/homepage', async (req, res) => {
     try {
         const user = req.session.user;
         const welcomeMessage = user ? `Welcome, ${user.username}` : 'Welcome';
-        res.render('homepage');
+        res.render('homepage', {logged_in:req.session.logged_in, user, posts:user.posts});
     } catch (err) {
         res.status(500).json(err);
     }
@@ -24,7 +24,8 @@ router.get('/homepage', async (req, res) => {
 
 router.get('/forum', async (req, res) => {
     try {
-        res.render('forum');
+        const user = req.session.user;
+        res.render('forum', {logged_in:req.session.logged_in, user, posts:user.posts});
     } catch (err) {
         res.status(500).json(err);
     }
@@ -48,7 +49,8 @@ router.get('/login', async (req, res) => {
 
 router.get('/profile', async (req, res) => {
     try {
-        res.render('profile');
+        const user = req.session.user;
+        res.render('profile',{logged_in:req.session.logged_in, user, posts:user.posts});
     } catch (err) {
         res.status(500).json(err);
     }
@@ -57,7 +59,8 @@ router.get('/profile', async (req, res) => {
 // update the router.get() method to include withAuth as the second argument
 router.get('/chat', async (req, res) => {
     try {
-        res.render('chat');
+        const user = req.session.user;
+        res.render('chat', {logged_in:req.session.logged_in, user, posts:user.posts});
     } catch (err) {
         res.status(500).json(err);
     }

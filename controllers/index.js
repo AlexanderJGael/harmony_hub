@@ -1,9 +1,13 @@
-const userController = require('./userController');
-const messageController = require('./messageController');
-const profileController = require('./profileController');
+const router = require('express').Router();
 
-module.exports = {
-    userController: exports.userController,
-    messageController: exports.messageController,
-    profileController: exports.profileController,
-    };
+const homeRoutes = require('../routes/homeRoutes');
+const userRoutes = require('../routes/userRoutes');
+const profileRoutes = require('../routes/profileRoutes');
+const loginRoutes = require('../routes/loginRoutes');
+
+router.use('/', homeRoutes);
+router.use('/api/user', userRoutes);
+router.use('/api/profile', profileRoutes);
+router.use('/api/login', loginRoutes);
+
+module.exports = router;

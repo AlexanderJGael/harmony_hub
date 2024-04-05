@@ -1,11 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
 // Function to handle login button click
-function handleLoginClick() {
+function handleLoginClick(event) {
+    event.preventDefault();
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
     // Send a POST request to the server to authenticate the user
-    fetch('/login', {
+    fetch('/api/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -16,7 +17,7 @@ function handleLoginClick() {
     )
     .then(response => {
         if (response.ok) {
-            window.location.href = '/homepage';
+            document.location.assign("/")
         } else if (response.status === 404) {
             document.getElementById('login-warning').innerText = 'User does not exist. Please register your account.';
         } else if (response.status === 401) {

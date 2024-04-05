@@ -29,10 +29,16 @@
 
             <div class="text-end">
             {{#if logged_in}}
+            <a href="/profile">
                 <button href="/profile" type="button" class="btn btn-outline-light me-2">Profile</button>
+                <p>Welcome, {{user.username}}</p> <!-- Display username here -->
+            </a>
             {{else}}
                 <a href="/login">
                     <button type="button" class="btn btn-outline-light me-2">Login</button>
+                </a>
+                <a href="/register">
+                    <button type="button" class="btn btn-warning">Sign Up</button>
                 </a>
             {{/if}}
             </div>

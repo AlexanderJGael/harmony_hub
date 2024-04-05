@@ -14,7 +14,7 @@ function doInputsMatch(input1, input2) {
 
 // Function to send registration data to the server
 function sendRegistrationData(email, username, password) {
-    fetch('/register', {
+    fetch('/api/register', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
