@@ -11,6 +11,7 @@
 </head>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="/js/login.js"></script>
 <!-- Header -->
 
 <header class="p-3 bg-dark text-bg-dark">
@@ -30,9 +31,12 @@
             <div class="text-end">
             {{#if logged_in}}
             <a href="/profile">
-                <button href="/profile" type="button" class="btn btn-outline-light me-2">Profile</button>
-                <p>Welcome, {{user.username}}</p> <!-- Display username here -->
+                <button type="button" class="btn btn-outline-light me-2">Profile</button>
             </a>
+            <a href="/chat">
+                <button type="button" class="btn btn-outline-light me-2">Chat</button>
+            </a>
+                <p>Welcome, {{user.username}}</p> <!-- Display username here -->
             {{else}}
                 <a href="/login">
                     <button type="button" class="btn btn-outline-light me-2">Login</button>

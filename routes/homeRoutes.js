@@ -6,7 +6,12 @@ router.get('/', async (req, res) => {
     try {
         const user = req.session.user;
         const welcomeMessage = user ? `Welcome, ${user.username}` : 'Welcome';
-        res.render('homepage', {logged_in:req.session.logged_in, user, posts:user.posts});
+/*         res.render('homepage', {logged_in:req.session.logged_in, user, posts:user.posts}); */
+        if (!req.session.logged_in) {
+            res.redirect('/login');
+        } else {
+            res.render('homepage', {logged_in:req.session.logged_in, user, posts:user.posts});
+        }
      } catch (err) {
          res.status(500).json(err);
      }
@@ -25,10 +30,13 @@ router.get('/homepage', async (req, res) => {
 router.get('/forum', async (req, res) => {
     try {
         const user = req.session.user;
-        res.render('forum', {logged_in:req.session.logged_in, user, posts:user.posts});
-    } catch (err) {
+        if (!req.session.logged_in) {
+            res.redirect('/login');
+        } else {
+            res.render('forum', {logged_in:req.session.logged_in, user, posts:user.posts});
+        } catch (err) {
         res.status(500).json(err);
-    }
+    };
 });
 
 router.get('/register', async (req, res) => {

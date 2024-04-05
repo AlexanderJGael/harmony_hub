@@ -4,8 +4,6 @@ const socket = io({
     auth: {
         serverOffset: 0,
     },
-    ackTimeout: 10000,
-    retries: 3,
 });
 
 const form = $('#chat-form');

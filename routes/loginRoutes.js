@@ -6,14 +6,6 @@ const UserController = require("../controllers/userController");
 
 const router = express.Router();
 
-router.get('/login', async (req, res) => {
-  try {
-    res.render('login');
-  } catch (err) {
-    res.status(500).json(err);
-  };
-});
-
 // Login route
 router.post("/", async (req, res) => {
   try {
