@@ -13,13 +13,13 @@
     <header>
         <nav>
             <a href="/">Home</a> |
-            <a href="/views/forum.handlebars">Forum</a>
+            <a href="/forum">Forum</a>
             {{#if logged_in}} |
-                <a href="/views/profile.handlebars">Profile</a> |
+                <a href="/profile">Profile</a> |
                 <button class="no-button" id="logout">Logout</button>
             {{else}}
-                <a href="/views/login.handlebars">Login</a>
-                <a href="/views/registration.handlebars">Signup</a>
+                <a href="/login">Login</a>
+                <a href="/registration">Signup</a>
             {{/if}}
         </nav>
     </header>

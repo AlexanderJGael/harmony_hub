@@ -29,7 +29,7 @@ saveBtn.addEventListener('click', () => {
     const username = usernameElement.textContent;
     const aboutMe = aboutMeTextarea.value;
 
-    fetch('/api/user/profile', {
+    fetch('/api/profiles', {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
