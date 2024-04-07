@@ -44,21 +44,4 @@ Messages.init(
   }
 );
 
-module.exports = (sequelize, DataTypes) => {
-  const Messages = sequelize.define('Messages', {
-    id: DataTypes.UUID,
-    content: DataTypes.TEXT,
-    userId: DataTypes.UUID,
-    username: DataTypes.STRING,
-  });
-    
-  Messages.associate = function(models) {
-    Messages.belongsTo(models.User, {
-      foreignKey: 'userId',
-      onDelete: 'CASCADE',
-    })
-  };
-  return Messages;
-};
-
 module.exports = Messages;

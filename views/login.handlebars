@@ -1,12 +1,11 @@
 <link rel="stylesheet" href="/css/login.css">
 
-
 <div id="login-container" class="container">
     <div id="login-form" class="form-container border bg-light p-5 rounded" style="width: 500px;">
         <div class="header text-center pb-3">
             <h2 class="font-weight-bold text-primary">HarmonyHub</h2>
         </div>
-        <form action="/login" method="POST">
+        <form action="/api/login" method="POST">
             <div class="form-group">
                 <label for="username">Username:</label>
                 <input class="form-control" type="text" id="username" name="username" required>
@@ -18,10 +17,10 @@
             <button type="submit" class="form-control btn btn-primary" id="login-button">Login</button>
             <a class="form-control btn btn-ghost" href="/register">Register</a>
             {{#if noUser}}
-            <p class="text-danger">User does not exist. Please register a new account.</p>
+            <p id="login-warning" class="text-danger">User does not exist. Please register a new account.</p>
             {{/if}}
             {{#if incorrectPassword}}
-            <p class="text-danger">Incorrect password. Please try again.</p>
+            <p id="login-warning" class="text-danger">Incorrect password. Please try again.</p>
             {{/if}}
         </form>
     </div>

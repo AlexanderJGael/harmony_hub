@@ -1,3 +1,5 @@
+const main = async () => {
+const morgan = require('morgan');
 const path = require('path');
 const express = require('express');
 const session = require('express-session');
@@ -14,11 +16,7 @@ const { createAdapter, setupPrimary } = require('@socket.io/cluster-adapter');
 dotenv.config();
 
 // Import routes
-const routes = require('./controllers')
-const loginRoutes = require('./routes/loginRoutes');
-const userRoutes = require('./routes/userRoutes');
-const profileRoutes = require('./routes/profileRoutes');
-const homeRoutes = require('./routes/homeRoutes');
+const routes = require('./routes')
 
 // Check if the current process is the primary process
 if (cluster.isPrimary) {
@@ -35,26 +33,27 @@ if (cluster.isPrimary) {
   return setupPrimary();
 }
 
-const main = async () => {
-  // Create Express app
-  const app = express();
-  const hbs = exphbs.create({ helpers });
-  const server = createServer(app);
-  
-  // Configure Handlebars as template engine
-  app.engine('handlebars', hbs.engine);
-  app.set('view engine', 'handlebars');
-  app.set('views', path.join(__dirname, 'views'));
-  
-  // Set up session middleware
-  const sessionMiddleware = session({
-    secret: process.env.SESSION_SECRET || 'Super secret secret',
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
-    },
-  });
+// Create Express app
+const app = express();
+const hbs = exphbs.create({ helpers });
+const server = createServer(app);
+
+// Configure Handlebars as template engine
+app.engine('handlebars', hbs.engine);
+app.set('view engine', 'handlebars');
+app.set('views', path.join(__dirname, 'views'));
+
+// Set up session middleware
+const sessionMiddleware = session({
+  secret: process.env.SESSION_SECRET || 'Super secret secret',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    maxAge: 24 * 60 * 60 * 1000, // 1 day
+  },
+});
+
+app.use(morgan('dev'));
   
   app.use(sessionMiddleware);
   

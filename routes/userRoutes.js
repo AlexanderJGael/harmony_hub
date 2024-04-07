@@ -3,7 +3,10 @@ const router = express.Router();
 const { User } = require("../models")
 const UserController = require('../controllers/userController');
 
-router.post('/register', async (req, res) => {
+router.post('/api/register', async (req, res) => {
+
+  console.log()
+
     try {
       const { username, email, password } = req.body;
       const newUser = await User.create({
@@ -24,7 +27,9 @@ router.post('/register', async (req, res) => {
     }
   });
 
-router.post('/login', async (req, res) => {
+/* router.post('/api/login', async (req, res) => {
+  console.log(' POST /api/login');
+  console.log(req.body);
     try {
       // const { username, password } = req.body; // Couldnt get password to work properly.
       // const user = await User.findOne({ where: { username } });
@@ -46,6 +51,6 @@ router.post('/login', async (req, res) => {
       console.error(error);
       res.status(500).json({ message: 'Internal server error' });
     }
-  });
+  }); */
 
 module.exports = router;

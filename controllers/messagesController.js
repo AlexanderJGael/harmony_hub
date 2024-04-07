@@ -1,4 +1,4 @@
-const { Messages } = require('../models/Messages');
+const Messages = require('../models/Messages');
 const User = require('../models/User');
 const { Sequelize } = require('sequelize');
 const bcrypt = require('bcrypt');
@@ -27,7 +27,8 @@ exports.getMessages = async () => {
 };
 
 exports.getMessagesAfterId = async (id) => {
-    const messages = await Message.findAll({
+    try {
+    return messages = await Messages.findAll({
         where: {
             id: {
                 [Sequelize.Op.gt]: id
@@ -37,8 +38,11 @@ exports.getMessagesAfterId = async (id) => {
             model: User,
             attributes: ['id', 'username']
         }],
-    });
-    return messages;
+    })
+    } catch (e) {
+        console.error(e);
+        throw e;
+    };
 };
 
 exports.getMessagesByUser = async (userId) => {

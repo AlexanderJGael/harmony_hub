@@ -35,4 +35,6 @@ function handleLoginClick(event) {
 
 // Event listener for login button click
 const loginButton = document.getElementById('login-button');
-loginButton.addEventListener('click', handleLoginClick);
+if (loginButton){
+    loginButton.addEventListener('click', handleLoginClick);
+};

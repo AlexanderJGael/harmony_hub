@@ -7,7 +7,7 @@ const UserController = require("../controllers/userController");
 const router = express.Router();
 
 // Login route
-router.post("/", async (req, res) => {
+router.post("/api/login", async (req, res) => {
   try {
     const { username, password } = req.body;
 
