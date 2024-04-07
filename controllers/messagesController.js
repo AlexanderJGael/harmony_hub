@@ -1,12 +1,11 @@
-const Message = require('../models/Message');
+const { Messages } = require('../models/Messages');
 const User = require('../models/User');
 const { Sequelize } = require('sequelize');
 const bcrypt = require('bcrypt');
 
-exports.createMessage = async (msg) => {
+exports.createMessages = async (msg) => {
     try {
-        const message = await Message.create({ content: msg });
-        return message;
+        return await Messages.create({ content: msg });
     } catch (error) {
         console.error(error);
         throw error;
@@ -14,13 +13,17 @@ exports.createMessage = async (msg) => {
 };
 
 exports.getMessages = async () => {
-    const messages = await Message.findAll({
+    try {
+    return await Messages.findAll({
         include: [{
             model: User,
-            attributes: ['username']
+            attributes: ['id', 'username']
         }],
     });
-    return messages;
+    } catch (e) {
+        console.error(e);
+        throw e;
+    }
 };
 
 exports.getMessagesAfterId = async (id) => {
@@ -32,21 +35,25 @@ exports.getMessagesAfterId = async (id) => {
         },
         include: [{
             model: User,
-            attributes: ['username']
+            attributes: ['id', 'username']
         }],
     });
     return messages;
 };
 
 exports.getMessagesByUser = async (userId) => {
-    const messages = await Message.findAll({
+    try {
+    return await Messages.findAll({
         where: {
             userId: userId
         },
         include: [{
             model: User,
-            attributes: ['username']
+            attributes: ['id', 'username']
         }],
     });
-    return messages;
+    } catch (e) {
+        console.error(e);
+        throw e;
+    }
 };

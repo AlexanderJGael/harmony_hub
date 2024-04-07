@@ -1,13 +1,13 @@
-const Message = require('../models/message');
+const { Messages } = require('../models/');
 const User = require('../models/User');
 const { Sequelize } = require('sequelize');
 const bcrypt = require('bcrypt');
 
 module.exports = {
-  createMessage: async (msg) => {
+  createMessages: async (msg) => {
       try {
-          const message = await Message.create({ content: msg });
-          return message;
+          const messages = await Messages.create({ content: msg });
+          return messages;
       } catch (error) {
           console.error(error);
           throw error;
@@ -15,17 +15,17 @@ module.exports = {
   },
   
   getMessages: async () => {
-      const messages = await Message.findAll({
+      const messages = await Messages.findAll({
           include: [{
               model: User,
-              attributes: ['username']
+              attributes: ['username', 'id']
           }],
       });
       return messages;
   },
   
   getMessagesAfterId: async (id) => {
-      const messages = await Message.findAll({
+      const messages = await Messages.findAll({
           where: {
               id: {
                   [Sequelize.Op.gt]: id
@@ -33,20 +33,20 @@ module.exports = {
           },
           include: [{
               model: User,
-              attributes: ['username']
+              attributes: ['id', 'username']
           }],
       });
       return messages;
   },
   
 getMessagesByUser: async (userId) => {
-      const messages = await Message.findAll({
+      const messages = await Messages.findAll({
           where: {
               userId: userId
           },
           include: [{
               model: User,
-              attributes: ['username']
+              attributes: ['id'],
           }],
       });
       return messages;

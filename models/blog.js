@@ -7,10 +7,10 @@ class Blog extends Model {}
 Blog.init(
     {
         id: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4,
             allowNull: false,
             primaryKey: true,
-            autoIncrement: true,
         },
         title: {
             type: DataTypes.STRING,
@@ -20,7 +20,7 @@ Blog.init(
             type: DataTypes.TEXT,
         },
         authorId: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.UUID,
             allowNull: false,
             references: {
                 model: "User",
@@ -35,7 +35,7 @@ Blog.init(
     },
     {
         sequelize,
-        timestamps: false,
+        timestamps: true,
         freezeTableName: true,
         modelName: "blog",
     }

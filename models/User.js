@@ -11,15 +11,18 @@ class User extends Model {
 User.init(
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
       allowNull: false,
       primaryKey: true,
-      autoIncrement: true,
+      key: 'id',
     },
     username: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
+      primaryKey: true,
+      key: 'username',
     },
     email: {
       type: DataTypes.STRING,
@@ -49,6 +52,14 @@ User.init(
         }
         return updatedUser;
       },
+      afterUpdate: async (updatedUser) => {
+        const { Messages } = require("./Messages");
+        await Messages.update({ username: updatedUser.username }, { where: { userId: User.id}})
+      },
+      afterDestroy: async (destroyedUser) => {
+        const { Messages } = require("./Messages");
+        await Messages.destroy({ where: { userId: User.id }});
+      },
     },
     sequelize,
     timestamps: true,
@@ -59,19 +70,19 @@ User.init(
 
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define("User", {
-    id: DataTypes.INTERGER,
+    id: DataTypes.UUID,
     username: DataTypes.STRING,
     email: DataTypes.STRING,
     password: DataTypes.STRING,
   });
 
   User.associate = function(models) {
-    User.hasMany(models.Message, {
+    User.hasMany(models.Messages, {
       foreignKey: "userId",
+      onDelete: "CASCADE",
     });
   };
-
   return User;
-}
+};
 
 module.exports = User;

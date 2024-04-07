@@ -20,6 +20,7 @@ exports.updateProfile = async (req, res) => {
             { where: { id: req.user.id } }
         );
 
+        res.redirect('/profile/' + req.user.id);
         res.json({ message: 'User profile updated successfully' });
     } catch (err) {
         console.error('Error updating user profile:', err);
