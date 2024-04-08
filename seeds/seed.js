@@ -3,6 +3,8 @@ const { User, Forum, Blog, Messages, Profile } = require('../models');
 const userData = require("./userData.json");
 
 const seedDatabase = async (userData) => {
+  await User.sync();
+
   await sequelize.sync();
 
     await User.bulkCreate(userData, {

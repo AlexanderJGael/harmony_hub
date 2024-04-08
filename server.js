@@ -1,5 +1,4 @@
 const main = async () => {
-const flash = require('connect-flash');
 const dotenv = require('dotenv');
 const path = require('path');
 const express = require('express');
@@ -67,12 +66,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Mount routes
 app.use(routes);
-app.use(flash());
-app.use((req, res, next) => {
-  res.locals.success_msg = req.flash('success_msg');
-  res.locals.error_msg = req.flash('error_msg');
-  next();
-});
 
 sequelize.sync().then( async () => {
   // Synchronize the session store
