@@ -38,10 +38,6 @@ const app = express();
 const hbs = exphbs.create({ helpers });
 const server = createServer(app);
 
-// Configure Handlebars as template engine
-app.engine('handlebars', hbs.engine);
-app.set('view engine', 'handlebars');
-app.set('views', path.join(__dirname, 'views'));
 
 // Set up session middleware
 const sessionMiddleware = session({
@@ -53,9 +49,13 @@ const sessionMiddleware = session({
   },
 });
 
+// Configure Handlebars as template engine
+app.use(sessionMiddleware);
+app.engine('handlebars', hbs.engine);
+app.set('view engine', 'handlebars');
+app.set('views', path.join(__dirname, 'views'));
 app.use(morgan('dev'));
   
-  app.use(sessionMiddleware);
   
   // Parse incoming requests with JSON payloads
   app.use(express.json());

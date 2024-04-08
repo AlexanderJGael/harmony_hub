@@ -1,3 +1,4 @@
+onload = () => {
 let counter = 0;
 
 const socket = io({
@@ -65,3 +66,4 @@ socket.on('error', (error) => {
 socket.on('logout', () => {
   localStorage.removeItem('messages');
 });
+};

@@ -17,11 +17,13 @@ function handleLoginClick(event) {
         body: JSON.stringify({ username: username, password: password })
     },
     )
-    .then(res => res.json())
-    .then(data => {
-        if (data.message) {
-            errorMessage.textContent = data.message;
+    .then(res => {
+        if (!res.ok) {
+            throw new Error('Failed to login');
         }
+
+        // Redirect to the homepage if login is successful
+        window.location.replace('/');
     })
     .catch(error => {
         console.error('Error:', error);

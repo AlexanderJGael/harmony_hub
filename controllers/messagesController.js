@@ -1,22 +1,22 @@
 const Messages = require('../models/Messages');
 const User = require('../models/User');
+const Sequelize = require('sequelize');
+const { Op } = require('sequelize');
 
-exports.chatGet = async (req, res, next) => {
+exports.getChat = (req, res, next) => {
     try {
-        const user = await User.findOne({ where: { id: req.session.userId } });
-
-        if (req.session.logged_in) {
+        if (!req.session.logged_in) {
             return res.redirect('/login');
         }
-
-        res.render('chat', { logged_in: req.session.logged_in, username: user.username});
+        const user = req.session.user;
+        res.render('chat', { logged_in: req.session.logged_in, user });
     } catch (e) {
         console.error(e);
         return next(e);
     }
 };
 
-exports.chatPost = async (req, res, next) => {
+exports.postChat = async (req, res, next) => {
     try {
         const { content } = req.body;
         const user = await User.findOne({ where: { id: req.session.userId } });

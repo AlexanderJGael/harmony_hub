@@ -25,15 +25,21 @@ function sendRegistrationData(email, username, password) {
             password: password
         })
     })
-    .then(res => res.json())
-    .then(data => {
-        if (data.message) {
-            errorMessage.textContent = data.message;
+    .then(res => {
+        if (res.status === 400) {
+            errorMessage.textContent = 'Invalid email';
+            return;
         }
-        })
+        if (res.status === 409) {
+            errorMessage.textContent = 'User already exists';
+            return;
+        } else {
+            window.location.replace('/');
+        };
+    })
     .catch(error => {
         console.error('Error:', error);
-        errorMessage.textContent = error.message;
+        return;
     });
 };
 

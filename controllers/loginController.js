@@ -28,16 +28,30 @@ exports.registerPost = async(req, res, next) => {
     try {
         const { username, email, password } = req.body;
 
-        const duplicateUser = await User.findOne({ where: { username } });
-        const duplicateEmail = await User.findOne({ where: { email } });
-
-        if (duplicateUser) {
-            return res.status(409).json({ message: "Username already exists" });
+        const isValidEmail = email.match(/.+@.+\..+/);
+        if (!isValidEmail) {
+            res.status(400).json({ message: "Invalid email" });
+            return;
         }
 
-        if (duplicateEmail) {
-            return res.status(409).json({ message: "Email already exists" });
+        const isValidPassword = password.length >= 8;
+        if (!isValidPassword) {
+            res.status(400).json({ message: "Password must be at least 8 characters long" });
+            return;
         }
+
+        const userExists = await User.findOne({ where: { email } });
+        if (userExists) {
+            res.status(409).json({ message: "User already exists" });
+            return;
+        }
+
+        const emailExists = await User.findOne({ where: { email } });
+        if (emailExists) {
+            res.status(409).json({ message: "Email already exists" });
+            return;
+        }
+
 
         const user = await User.create({ username, email, password });
 
