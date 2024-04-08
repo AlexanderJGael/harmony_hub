@@ -30,13 +30,10 @@
     "prettier": "^3.2.5",
     "sequelize": "^6.37.1",
     "socket.io": "^4.7.5",
-    "sqlite": "^5.1.1",
-    "sqlite3": "^5.1.7",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
     "jest": "^29.7.0",
-    "morgan": "^1.10.0",
     "npm-check-updates": "^16.14.18"
   }
 }
