@@ -47,6 +47,9 @@ function sendRegistrationData(email, username, password) {
 function register(event) {
     event.preventDefault();
     errorMessage.textContent = '';
+    const email = emailInput.value;
+    const username = usernameInput.value;
+    const password = passwordInput.value;
 
     // Checks to see if fields are filled and if they match each other.
     if (!emailInput.value || !confirmEmailInput.value || !usernameInput.value || !confirmUsernameInput.value || !passwordInput.value || !confirmPasswordInput.value) {
@@ -66,10 +69,6 @@ function register(event) {
         errorMessage.textContent = 'Passwords do not match.';
         return;
     }
-
-    const email = emailInput.value;
-    const username = usernameInput.value;
-    const password = passwordInput.value;
 
     // Send registration data to the server
     sendRegistrationData(email, username, password);

@@ -30,26 +30,22 @@ exports.registerPost = async(req, res, next) => {
 
         const isValidEmail = email.match(/.+@.+\..+/);
         if (!isValidEmail) {
-            res.status(400).json({ message: "Invalid email" });
-            return;
+            return res.status(400).json({ message: "Invalid email" });
         }
 
         const isValidPassword = password.length >= 8;
         if (!isValidPassword) {
-            res.status(400).json({ message: "Password must be at least 8 characters long" });
-            return;
+            return res.status(400).json({ message: "Password must be at least 8 characters long" });
         }
 
         const userExists = await User.findOne({ where: { email } });
         if (userExists) {
-            res.status(409).json({ message: "User already exists" });
-            return;
+            return res.status(409).json({ message: "User already exists" });
         }
 
         const emailExists = await User.findOne({ where: { email } });
         if (emailExists) {
-            res.status(409).json({ message: "Email already exists" });
-            return;
+            return res.status(409).json({ message: "Email already exists" });
         }
 
 
@@ -62,7 +58,7 @@ exports.registerPost = async(req, res, next) => {
         });
     } catch (e) {
         console.error(e);
-        return res.json(`Error: ${e.message}`);
+        return next(e);
     };
 };
 
@@ -78,21 +74,16 @@ exports.loginGet = async (req, res, next) => {
 exports.loginPost = async (req, res, next) => {
     try {
         const { username, password } = req.body;
-        const user = await User.findOne({ where: { 
-            username }
-         });
-
+        const user = await User.findOne({ where: { username } });
         if (!user) {
-            res.status(401).json({ message: "Invalid username" });
-            return;
+            return res.status(404).send({ message: "User not found" });
         }
 
-        const valid = await user.checkPassword(password);
-
-        if (!valid) {
-            res.status(401).json({ message: "Invalid password" });
-            return;
+        const validPassword = await User.checkPassword(password);
+        if (!validPassword) {
+            return res.status(401).send({ message: "Invalid password"});
         }
+
 
         req.session.save(() => {
             req.session.logged_in = true;
@@ -102,7 +93,7 @@ exports.loginPost = async (req, res, next) => {
     }
     catch (e) {
         console.error(e);
-        return res.json(e.message);
+        return next(e);
     }
 };
 
