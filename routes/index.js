@@ -15,16 +15,19 @@ router.use('/register', userRoutes)
 router.use('/logout', loginRoutes)
 
 // USER routes
-router.use('/users', userRoutes)
 router.use('/api/users', userRoutes)
-router.use('/api/user', userRoutes)
-router.use('/api/user/create', userRoutes)
 
 // MESSAGE routes
 router.use('/chat', messageRoutes)
 router.use('/api/chat', messageRoutes)
 
 // PROFILE routes
-router.use('/user', profileRoutes)
+router.use('/profile', profileRoutes)
+
+// BLOG routes
+router.use('/blog', blogRoutes)
+
+// FORUM routes
+router.use('/forum', forumRoutes)
 
 module.exports = router;

@@ -1,15 +1,17 @@
+const Sequelize = require('sequelize');
 const Messages = require('../models/Messages');
 const User = require('../models/User');
-const Sequelize = require('sequelize');
 const { Op } = require('sequelize');
 
 exports.getChat = (req, res, next) => {
     try {
+        const user = req.session.user;
+
         if (!req.session.logged_in) {
             return res.redirect('/login');
         }
-        const user = req.session.user;
-        res.render('chat', { logged_in: req.session.logged_in, user });
+
+        res.render('chat', {layout: 'main',  logged_in: req.session.logged_in, user: user });
     } catch (e) {
         console.error(e);
         return next(e);

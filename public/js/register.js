@@ -18,6 +18,38 @@ function doInputsMatch(input1, input2) {
     return input1.value === input2.value;
 }
 
+const userDatabasePOST = async (email, username, password) => {
+    try {
+        await fetch('/api/users', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: email,
+                username: username,
+                password: password
+            })
+        });
+    } catch (e) {
+        console.error(e);
+        throw e;
+    }
+}
+
+const createApiUser = async (email, username, password) => {
+    try {
+        const response = await fetch('/api/users');
+        const data = await response.json();
+        return data;
+    } catch (e) {
+        console.error(e);
+        throw e;
+    };
+
+    userDatabasePOST(email, username, password);
+};
+
 // Function to send registration data to the server
 function sendRegistrationData(email, username, password) {
     fetch('/register', {
@@ -39,7 +71,9 @@ function sendRegistrationData(email, username, password) {
         if (res.status === 409) {
             errorMessage.textContent = 'User already exists';
             return;
-        } 
+        }
+
+        createApiUser(email, username, password);
         window.location.href = '/';
     })
     .catch(error => {

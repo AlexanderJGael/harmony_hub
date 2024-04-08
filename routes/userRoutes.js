@@ -4,12 +4,10 @@ const { User } = require("../models")
 const userController = require('../controllers/userController');
 const profileController = require('../controllers/profileController');
 
-
-router.get('/api/user/create', userController.userCreateGet);
-router.post('/api/user/create', userController.userCreate);
-router.get('/users', userController.userList);
-router.get('/api/users', userController.userList);
-router.post('/api/users', userController.userCreate);
+// multiple users
+router.get('/', userController.userList);
+router.post('/:id', userController.userPost);
+router.get('/:id', userController.userGet);
 
 module.exports = router;
 

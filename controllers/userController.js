@@ -3,21 +3,12 @@ const { Op } = require('sequelize');
 
 exports.userGet = async (req, res, next) => {
   try {
-    const user = await User.findByPk(req.params.id);
+    const user = await User.findOne({ where: { id: req.session.userId } });
+  
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
     res.status(200).json(user);
-  } catch (e) {
-    console.error(e);
-    return next(e);
-  }
-};
-
-exports.userPost = async (req, res, next) => {
-  try {
-    const user = await User.create(req.body);
-    res.status(201).json(user);
   } catch (e) {
     console.error(e);
     return next(e);
@@ -50,7 +41,7 @@ exports.userCreateGet = (req, res, next) => {
   }
 };
 
-exports.userCreate = async (req, res, next) => {
+exports.userPost = async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
     const newUser = await User.create({
@@ -58,11 +49,24 @@ exports.userCreate = async (req, res, next) => {
       email,
       password,
     });
+
     req.session.save(() => {
       req.session.userId = newUser.id;
       req.session.logged_in = true;
+
+      // mkake post to /api/users/:id
+      fetch(`/api/users/${newUser.id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newUser),
+      }).then(res => res.json())
+      .then(data => console.log(data))
+      .catch(e => { console.log(data) });
+      
       res.status(200).json({ message: 'User created successfully' });
-    });
+      }) 
   } catch (e) {
     console.error(e);
     return next(e);
@@ -127,3 +131,21 @@ exports.userDelete = async (req, res, next) => {
     return next(e);
   }
 };
+
+exports.userUpdate = async (req, res, next) => {
+  try {
+    const { username, email, password } = req.body;
+    const updatedUser = await User.update(
+      { username, email, password },
+      { where: { id: req.params.id } }
+    );
+    if (updatedUser[0] === 0) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.status(200).json({ message: 'User updated successfully' });
+  } catch (e) {
+    console.error(e);
+    return next(e);
+  }
+};
+

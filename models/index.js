@@ -1,8 +1,8 @@
-const User = require("./User"); 
-const Blog = require("./blog");
-const Forum = require("./forum");
+const User = require('./User')
+const Blog = require("./Blog");
+const Forum = require("./Forum");
 const Messages = require("./Messages");
-const Profile = require("./profile");
+const Profile = require("./Profile");
 
 User.hasMany(Messages, {
     foreignKey: "senderId",
@@ -40,4 +40,4 @@ Profile.belongsTo(User, {
     foreignKey: "userId",
 });
 
-module.exports = { User, Messages, Blog, Forum };
+module.exports = { User, Messages, Blog, Forum, Profile };

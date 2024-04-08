@@ -1,4 +1,4 @@
-onload = () => {
+document.addEventListener('DOMContentLoaded', () => {
 let counter = 0;
 
 const socket = io({
@@ -10,8 +10,12 @@ const socket = io({
 const form = $('#chat-form');
 const input = $('#chat-input');
 const messages = $('#chat-messages');
+const userData = $('chat-container').dataset.user;
+const user = JSON.parse(userData);
+const msg = $('#chat-input').val();
 
-function displayErrorMessage(message) {
+
+const displayErrorMessage = (message) =>  {
   const item = document.createElement('li');
   item.className = "d-flex text-start p-2";
   const p = document.createElement('p');
@@ -20,6 +24,16 @@ function displayErrorMessage(message) {
   item.append(p);
   messages.append(item);
   window.scrollTo(0, document.body.scrollHeight);
+};
+
+const postMessage = async (user, msg) => {
+  try {
+    const newMessage = await Messages.create({ content: msg, userId: user.id, userName: user.username });
+    return newMessage;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
 };
 
 /* socket.on('connect', () => {
@@ -35,17 +49,19 @@ socket.on('reconnect', () => {
 });
 
 
-form.on('submit', (e) => {
+form.on('submit', async (e) => {
     e.preventDefault();
-    if (input.val()) {
+    const message = input.val();
+
+    if (msg) {
       const item = document.createElement('li');
-      item.textContent = `You: ${input.val()}`;
+      item.textContent = `You: ${msg.message}`;
       messages.append(item);
       window.scrollTo(0, document.body.scrollHeight);
-      socket.emit('chat message', input.val());
+      socket.emit('chat message', msg);
       input.val('');
     }
-});
+})
 
 socket.on('chat message', (msg, serverOffset) => {
   const item = document.createElement('li');
@@ -66,4 +82,4 @@ socket.on('error', (error) => {
 socket.on('logout', () => {
   localStorage.removeItem('messages');
 });
-};
+});
