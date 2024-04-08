@@ -4,6 +4,11 @@ const usernameInput = document.getElementById('loginUsername');
 const passwordInput = document.getElementById('loginPassword');
 const loginError = document.getElementById('loginWarning');
 const loginButton = document.getElementById('loginButton');
+const loginHome = document.getElementById('loginOrRegister');
+
+const removeButton = () => {
+    loginHome.remove();
+};
 
 // Function to send registration data to the server
 const sendLoginData = (username, password) => {
@@ -45,6 +50,9 @@ const login = (event) => {
 
     sendLoginData(username, password);
 };
+
+// Event listener for remove button click
+removeButton();
 
 // Event listener for login button click
 loginButton.addEventListener('click', login);

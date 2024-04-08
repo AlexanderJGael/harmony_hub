@@ -6,6 +6,12 @@ const passwordInput = document.getElementById('password');
 const confirmPasswordInput = document.getElementById('confirmPassword');
 const registerButton = document.getElementById('registerButton');
 const errorMessage = document.getElementById('errorMessage');
+const registerHome = document.getElementById('loginOrRegister');
+
+// Function to remove the login button
+function removeButton() {
+    registerHome.remove();
+};
 
 // Function to check if two input values match
 function doInputsMatch(input1, input2) {
@@ -72,6 +78,8 @@ function register(event) {
     // Send registration data to the server
     sendRegistrationData(email, username, password);
 };
+
+removeButton();
 
 // Event listener for register button click
 registerButton.addEventListener('click', register);
