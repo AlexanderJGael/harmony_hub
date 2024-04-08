@@ -1,2 +1,4 @@
 DROP DATABASE IF EXISTS users_db;
-CREATE DATABASE users_db;
+DROP DATABASE IF EXISTS harmonyhub_db;
+
+CREATE DATABASE harmonyhub_db;

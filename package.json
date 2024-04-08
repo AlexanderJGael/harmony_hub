@@ -25,6 +25,7 @@
     "express-handlebars": "^7.1.2",
     "express-session": "^1.18.0",
     "mysql2": "^3.9.2",
+    "npm": "^10.5.1",
     "path": "^0.12.7",
     "prettier": "^3.2.5",
     "sequelize": "^6.37.1",
