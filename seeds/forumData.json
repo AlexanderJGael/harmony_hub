@@ -1,17 +1,14 @@
 [
     {
-        "id": 1,
         "content": "Welcome to the HarmonyHub Forum! Feel free to start discussions, ask questions, and connect with other musicians.",
-        "AuthorId": 1
+        "authorName": "john_doe"
     },
     {
-        "id": 2,
         "content": "Looking for collaborators for a new music project. Any takers?",
-        "AuthorId": 2
+        "authorName": "jane_smith"
     },
     {
-        "id": 3,
         "content": "What's your favorite music production software and why?",
-        "AuthorId": 3
+        "authorName": "emma_wilson"
     }
 ]

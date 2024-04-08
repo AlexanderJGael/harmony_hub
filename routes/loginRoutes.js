@@ -2,12 +2,12 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const { Op } = require("sequelize");
 const User = require("../models/User");
-const UserController = require("../controllers/userController");
+// const UserController = require("../controllers/userController");
 
 const router = express.Router();
 
-// Login route
-router.post("/api/login", async (req, res) => {
+/* // Login route
+router.post("/api/login", async (req, res, next) => {
   try {
     const { username, password } = req.body;
 
@@ -15,7 +15,7 @@ router.post("/api/login", async (req, res) => {
       where: {
         username,
       },
-    });
+    }).exec();
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -33,11 +33,23 @@ router.post("/api/login", async (req, res) => {
       res.status(200).json({ message: "login successful"});
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal Service Error" });
+      return next(error);
   }
-});
+}); */
 
 //router.post('/login', UserController.login);
+
+const loginController = require('../controllers/loginController');
+
+router.get('/', loginController.homePage);
+
+//LOGIN routes
+router.get('/login', loginController.loginGet);
+router.post('/login', loginController.loginPost);
+router.get('/logout', loginController.logoutGet);
+router.post('/logout', loginController.logoutPost);
+
+router.get('/register', loginController.registerGet);
+router.post('/register', loginController.registerPost);
 
 module.exports = router;

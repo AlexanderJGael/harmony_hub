@@ -1,12 +1,12 @@
-const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../config/connection");
+const { Model, DataTypes } = require("sequelize");
 const bcrypt = require("bcrypt");
 
 class User extends Model {
   checkPassword(loginPw) {
     return bcrypt.compareSync(loginPw, this.password);
   }
-}
+};
 
 User.init(
   {
@@ -31,13 +31,21 @@ User.init(
       validate: {
         isEmail: true,
       },
+      key: 'email',
     },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         len: [8]
-      }
+      },
+      key: 'password',
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+      key: 'createdAt',
     },
   },
   {
@@ -67,22 +75,5 @@ User.init(
     modelName: "user",
   }
 );
-
-module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define("User", {
-    id: DataTypes.UUID,
-    username: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
-  });
-
-  User.associate = function(models) {
-    User.hasMany(models.Messages, {
-      foreignKey: "userId",
-      onDelete: "CASCADE",
-    });
-  };
-  return User;
-};
 
 module.exports = User;

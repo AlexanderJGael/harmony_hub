@@ -18,16 +18,6 @@ router.get('/', async (req, res) => {
      }
  });
 
-router.get('/homepage', async (req, res) => {
-    try {
-        const user = req.session.user;
-        const welcomeMessage = user ? `Welcome, ${user.username}` : 'Welcome';
-        res.render('homepage', {logged_in:req.session.logged_in, user, posts:user.posts});
-    } catch (err) {
-        res.status(500).json(err);
-    }
-});
-
 router.get('/forum', async (req, res) => {
     try {
         const user = req.session.user;

@@ -16,6 +16,14 @@ Forum.init(
       type: DataTypes.TEXT,
       allowNull: false,
     },
+    authorName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      references: {
+        model: "User",
+        key: "username",
+      },
+    },
     authorId: {
       type: DataTypes.UUID,
       allowNull: false,
@@ -37,21 +45,5 @@ Forum.init(
     modelName: "forum",
   }
 );
-
-module.exports = async (sequelize, DataTypes) => {
-  const Forum = sequelize.define('Forum', {
-    id: DataTypes.UUID,
-    content: DataTypes.TEXT,
-    authorId: DataTypes.UUID,
-    createdAt: DataTypes.DATE,
-  });
-
-  Forum.associate = function(models) {
-    Forum.belongsTo(models.User, {
-      foreignKey: 'userId',
-      onDelete: 'CASCADE',
-    })
-  };
-}
 
 module.exports = Forum;

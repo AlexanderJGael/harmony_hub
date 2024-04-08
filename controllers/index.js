@@ -1,8 +1,6 @@
-const express = require('express');
-const router = express.Router();
-
 const messagesController = require('./messagesController');
 const userController = require('./userController');
 const profileController = require('./profileController');
+const messagesController = require('./messagesController');
 
-module.exports = router
+module.exports = messagesController, userController, profileController, messagesController;

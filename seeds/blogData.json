@@ -1,22 +1,19 @@
 [
     {
-        "id": 1,
         "title": "Introduction to HarmonyHub",
         "content": "Welcome to HarmonyHub, where musicians come together to share their passion for music and connect with fellow artists!",
-        "authorId": 1
+        "authorName": "john_doe"
     },
     
     {
-        "id": 2,
         "title": "The Power of Collaboration",
         "content": "Discover the benefits of collaborating with other musicians and how it can enhance your musical journey.",
-        "authorId": 2
+        "authorName": "jane_smith"
     },
     
     {
-        "id": 3,
         "title": "Exploring New Music Genres",
         "content": "Dive into the world of different music genres and expand your musical horizons with HarmonyHub.",
-        "authorId": 3
+        "authorName": "emma_wilson"
     }
 ]

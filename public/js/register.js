@@ -14,7 +14,7 @@ function doInputsMatch(input1, input2) {
 
 // Function to send registration data to the server
 function sendRegistrationData(email, username, password) {
-    fetch('/api/register', {
+    fetch('/register', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -25,18 +25,17 @@ function sendRegistrationData(email, username, password) {
             password: password
         })
     })
-    .then(response => {
-        if (response.ok) {
-            window.location.href = '/login'; 
-        } else {
-            errorMessage.textContent = 'Failed to register. Please try again later.';
+    .then(res => res.json())
+    .then(data => {
+        if (data.message) {
+            errorMessage.textContent = data.message;
         }
-    })
+        })
     .catch(error => {
         console.error('Error:', error);
-        errorMessage.textContent = 'An unexpected error occurred. Please try again later.';
+        errorMessage.textContent = error.message;
     });
-}
+};
 
 // Function to handle registration process
 function register(event) {
@@ -62,9 +61,13 @@ function register(event) {
         return;
     }
 
+    const email = emailInput.value;
+    const username = usernameInput.value;
+    const password = passwordInput.value;
+
     // Send registration data to the server
-    sendRegistrationData(emailInput.value, usernameInput.value, passwordInput.value);
-}
+    sendRegistrationData(email, username, password);
+};
 
 // Event listener for register button click
 registerButton.addEventListener('click', register);

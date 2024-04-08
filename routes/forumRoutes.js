@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { Forum } = require("../models");
 
-router.post("/", async (req, res) => {
+router.post("/forum", async (req, res) => {
   try {
     const newPost = await Forum.create(req.body);
     res.status(201).json(newPost);
@@ -12,7 +12,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/forum/:id", async (req, res) => {
   try {
     const post = await Forum.findByPk(req.params.id);
     if (!post) {
@@ -25,7 +25,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/forum/:id", async (req, res) => {
   try {
     const [updated] = await Forum.update(req.body, {
       where: { id: req.params.id },
@@ -41,7 +41,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/forum/:id", async (req, res) => {
   try {
     const deleted = await Forum.destroy({
       where: { id: req.params.id },

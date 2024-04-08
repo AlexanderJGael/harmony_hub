@@ -1,13 +1,7 @@
 const sequelize = require('../config/connection');
 const { Model, DataTypes } = require('sequelize');
 
-class Messages extends Model {
-  static associate(models) {
-    Messages.belongsTo(models.User, {
-      foreignKey: 'user_id',
-    });
-  }
-};
+class Messages extends Model {}
 
 Messages.init(
   {
@@ -34,7 +28,12 @@ Messages.init(
         model: 'User',
         key: 'username',
       }
-    }
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+    },
   },
   {
     sequelize,

@@ -5,13 +5,13 @@
         <div class="header text-center pb-3">
             <h2 class="font-weight-bold text-primary">HarmonyHub</h2>
         </div>
-        <form action="/api/login" method="POST">
-            <div class="form-group">
-                <label for="username">Username:</label>
+        <form id="username-entry" action="/login" method="POST" class="form">
+            <div id="usernameField" class="form-group">
+                <label id="username-label" for="username">Username:</label>
                 <input class="form-control" type="text" id="username" name="username" required>
             </div>
-            <div class="form-group">
-                <label for="password">Password:</label>
+            <div id="password-entry" class="form-group">
+                <label id="password-label" for="password">Password:</label>
                 <input class="form-control" type="password" id="password" name="password" required>
             </div>
             <button type="submit" class="form-control btn btn-primary" id="login-button">Login</button>

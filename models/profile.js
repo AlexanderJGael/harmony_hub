@@ -1,51 +1,43 @@
-const { Model, DataTypes } = require("sequelize");
-const sequelize = require("../config/connection");
+const sequelize = require('../config/connection');
+const { Model, DataTypes } = require('sequelize');
 
-class Blog extends Model {}
+class Profile extends Model {}
 
-Blog.init(
+Profile.init(
     {
         id: {
             type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV4,
-            allowNull: false,
             primaryKey: true,
+            allowNull: false,
         },
-        title: {
+        bio: {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        content: {
-            type: DataTypes.TEXT,
-        },
-        authorId: {
+        user_id: {
             type: DataTypes.UUID,
-            allowNull: false,
             references: {
-                model: "User",
-                key: "id",
+                model: 'User',
+                key: 'id',
             },
         },
-        authorName: {
+        profile_pic: {
             type: DataTypes.STRING,
             allowNull: false,
-            references: {
-                model: "User",
-                key: "username",
-            },
         },
         createdAt: {
             type: DataTypes.DATE,
             allowNull: false,
             defaultValue: DataTypes.NOW,
-        },    
+        },
     },
     {
         sequelize,
         timestamps: true,
         freezeTableName: true,
-        modelName: "blog",
+        modelName: 'profile',
     }
 );
 
-module.exports = Blog;
+module.exports = Profile;

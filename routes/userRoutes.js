@@ -1,19 +1,26 @@
 const express = require('express');
 const router = express.Router();
 const { User } = require("../models")
-const UserController = require('../controllers/userController');
+const userController = require('../controllers/userController');
+const profileController = require('../controllers/profileController');
 
-router.post('/api/register', async (req, res) => {
 
-  console.log()
+router.get('/api/user/create', userController.userCreateGet);
+router.post('/api/user/create', userController.userCreate);
+router.get('/users', userController.userList);
+router.get('/api/users', userController.userList);
+router.post('/api/users', userController.userCreate);
 
+module.exports = router;
+
+/* router.post('/api/register', async (req, res, next) => {
     try {
       const { username, email, password } = req.body;
       const newUser = await User.create({
         username,
         email,
         password,
-      });
+      }).exec();
   
       // Set the user session after successful registration
       req.session.user = newUser;
@@ -22,10 +29,9 @@ router.post('/api/register', async (req, res) => {
       // Redirect to the homepage
       res.redirect('/');
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Internal server error' });
+        return next(error);
     }
-  });
+  }); */
 
 /* router.post('/api/login', async (req, res) => {
   console.log(' POST /api/login');
@@ -53,4 +59,4 @@ router.post('/api/register', async (req, res) => {
     }
   }); */
 
-module.exports = router;
+
