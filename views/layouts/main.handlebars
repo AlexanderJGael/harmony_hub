@@ -42,7 +42,7 @@
         </div>
         {{/if}}
         {{#unless logged_in}}
-        <div class="text-end">
+        <div id="loginOrRegister" class="text-end">
             <a href="/login">
             <button class="btn btn-primary">Login or Register</button></a>
             </a>
@@ -63,6 +63,14 @@
     </footer>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const loginOrRegister = ${'#loginOrRegister'};
+        if (window.location.pathname === '/login' || window.location.pathname === '/register') {
+            loginOrRegister.style.display = 'none';
+        };
+    });
+</script>
 </body>
 
 </html>
