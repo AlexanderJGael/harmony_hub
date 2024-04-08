@@ -53,7 +53,6 @@ app.use(sessionMiddleware);
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'views'));
-app.use(morgan('dev'));
   
   
   // Parse incoming requests with JSON payloads
