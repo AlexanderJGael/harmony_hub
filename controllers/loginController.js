@@ -8,7 +8,7 @@ exports.homePage = async(req, res, next) => {
             res.redirect("/login");
         }
 
-        res.render('homepage', { logged_in: req.session.logged_in, user });
+        res.render('homepage', {layout: 'main', logged_in: req.session.logged_in, user: user });
     } catch (e) {
         console.error(e);
         return next(e);
@@ -53,7 +53,7 @@ exports.registerPost = async(req, res, next) => {
 
         req.session.save(() => {
             req.session.logged_in = true;
-            req.session.user = user.id;
+            req.session.user = user;
             res.redirect("/");
         });
     } catch (e) {
@@ -79,15 +79,14 @@ exports.loginPost = async (req, res, next) => {
             return res.status(404).send({ message: "User not found" });
         }
 
-        const validPassword = await User.checkPassword(password);
+        const validPassword = await user.checkPassword(password);
         if (!validPassword) {
             return res.status(401).send({ message: "Invalid password"});
         }
 
-
         req.session.save(() => {
             req.session.logged_in = true;
-            req.session.user = user.id;
+            req.session.user = user;
             res.redirect("/");
         });
     }

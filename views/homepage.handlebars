@@ -1,53 +1,49 @@
-    <div class="jumbotron text-center">
-        <h1 class="display-4">Welcome to our Blog and Forum</h1>
-        <p class="lead">Explore, share, and learn with our community.</p>
+<div class="jumbotron text-center">
+    <h1 class="display-4">Welcome to our Blog and Forum</h1>
+    <p class="lead">Explore, share, and learn with our community.</p>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mx-auto">
+        <h2 class="mb-4 text-center">Blog Posts</h2>
+        {{#if posts}}
+            {{#with posts.[0]}}
+            <div class="post featured-post card mb-3 mx-auto text-center">
+                <div class="card-body">
+                    <h2 class="card-title">{{this.title}}</h2>
+                    <p class="card-text"><strong>Author:</strong> {{this.author}}</p>
+                    <p class="card-text"><strong>Date:</strong> {{this.date}}</p>
+                    <p class="card-text">{{this.content}}</p>
+                </div>
+            </div>
+            {{/with}}
+        
+            {{#each posts}}
+                {{#unless @first}}
+                <div class="post card mb-3 mx-auto text-center">
+                    <div class="card-body">
+                        <h3 class="card-title">{{this.title}}</h3>
+                        <p class="card-text"><strong>Author:</strong> {{this.author}}</p>
+                        <p class="card-text"><strong>Date:</strong> {{this.date}}</p>
+                        <p class="card-text">{{this.content}}</p>
+                    </div>
+                </div>
+                {{/unless}}
+            {{/each}}
+        {{/if}}
     </div>
 
-    <div class="row">
-        <div class="col-md-6 mx-auto">
-            <h2 class="mb-4 text-center">Blog Posts</h2>
-            {{#if posts}}
-                {{#with posts.[0]}}
-                    <div class="post featured-post card mb-3 mx-auto text-center">
-                        <div class="card-body">
-                            <h2 class="card-title">{{this.title}}</h2>
-                            <p class="card-text"><strong>Author:</strong> {{this.author}}</p>
-                            <p class="card-text"><strong>Date:</strong> {{this.date}}</p>
-                            <p class="card-text">{{this.content}}</p>
-                        </div>
-                    </div>
-                {{/with}}
-                {{#each posts}}
-                    {{#unless @first}}
-                        <div class="post card mb-3 mx-auto text-center">
-                            <div class="card-body">
-                                <h3 class="card-title">{{this.title}}</h3>
-                                <p class="card-text"><strong>Author:</strong> {{this.author}}</p>
-                                <p class="card-text"><strong>Date:</strong> {{this.date}}</p>
-                                <p class="card-text">{{this.content}}</p>
-                            </div>
-                        </div>
-                    {{/unless}}
-                {{/each}}
-            {{/if}}
+<div class="col-md-6">
+    <h2 class="mb-4 text-center">Forum Discussions</h2>
+    {{#each forums}}
+    <div class="card mb-3 mx-auto" style="width: fit-content;">
+        <div class="card-body text-center">
+            <h3 class="card-title">{{this.title}}</h3>
+            <p class="card-text"><strong>Author:</strong> {{this.author}}</p>
+            <p class="card-text"><strong>Date:</strong> {{this.date}}</p>
+            <p class="card-text">{{this.preview}}</p>
+            <a href="/forums/{{this.id}}" class="btn btn-primary">Read More</a>
         </div>
-
-            <div class="col-md-6">
-                <h2 class="mb-4 text-center">Forum Discussions</h2>
-                {{#each forums}}
-                    <div class="card mb-3 mx-auto" style="width: fit-content;">
-                        <div class="card-body text-center">
-                            <h3 class="card-title">{{this.title}}</h3>
-                            <p class="card-text"><strong>Author:</strong> {{this.author}}</p>
-                            <p class="card-text"><strong>Date:</strong> {{this.date}}</p>
-                            <p class="card-text">{{this.preview}}</p>
-                            <a href="/forums/{{this.id}}" class="btn btn-primary">Read More</a>
-                        </div>
-                    </div>
-                {{/each}}
-            </div>
-        </div>
-    </main>
-    <footer>
-    </footer>
+    </div>
+    {{/each}}
 </div>

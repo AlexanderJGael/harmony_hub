@@ -33,9 +33,8 @@ function sendRegistrationData(email, username, password) {
         if (res.status === 409) {
             errorMessage.textContent = 'User already exists';
             return;
-        } else {
-            window.location.replace('/');
-        };
+        } 
+        window.location.href = '/';
     })
     .catch(error => {
         console.error('Error:', error);

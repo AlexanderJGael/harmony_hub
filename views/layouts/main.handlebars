@@ -10,44 +10,47 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<!-- Header -->
+<header class="navbar sticky-top navbar-dark bg-dark p-3 mb-3 border-bottom">
+    <div class="container flex justify-content-center align-items-center">
+      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
+          <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
+        </a>
 
-<header class="p-3 bg-dark text-bg-dark">
-    <div class="container">
-        <div class="d-flex flex-wrap align-items-center justify-content-center">
-            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="/" class="nav-link px-2 text-light">Home</a></li>
-                <li><a href="/blog" class="nav-link px-2 text-light">Blog</a></li>
-                <li><a href="/forum" class="nav-link px-2 text-light">Forum</a></li>
-                <li><a href="/about" class="nav-link px-2 text-light">About</a></li>
+        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+          <li><a href="/" class="nav-link px-2 text-light link-dark">Home</a></li>
+          <li><a href="/blog" class="nav-link px-2 text-light link-dark">Blog</a></li>
+          <li><a href="/forum" class="nav-link px-2 text-light link-dark">Forum</a></li>
+          <li><a href="/about" class="nav-link px-2 text-light link-dark">About</a></li>
+        </ul>
+
+        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+          <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+        </form>
+
+        {{#if logged_in}}
+        <div class="dropdown text-end">
+            <a href="#" class="d-block link-dark text-light text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src={{user.profiilepicture}} alt="mdo" width="32" height="32" class="rounded-circle">
+            </a>
+            <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
+                <li><a href="/profile" class="dropdown-item">Profile</a></li>
+                <li><a href="/chat" class="dropdown-item">Chat</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a href="/logout" class="dropdown-item" href="#">Sign out</a></li>
             </ul>
-
-            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-                <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Search..." aria-label="Search">
-            </form>
-
-            <div class="text-end">
-            {{#if logged_in}}
-            <a href="/profile">
-                <button type="button" class="btn btn-outline-light me-2">Profile</button>
-            </a>
-            <a href="/chat">
-                <button type="button" class="btn btn-outline-light me-2">Chat</button>
-            </a>
-                <p>Welcome, {{user.username}}</p> <!-- Display username here -->
-            {{else}}
-                <a href="/login">
-                    <button type="button" class="btn btn-outline-light me-2">Login</button>
-                </a>
-                <a href="/register">
-                    <button type="button" class="btn btn-warning">Sign Up</button>
-                </a>
-            {{/if}}
-            </div>
         </div>
+        {{/if}}
+        {{#unless logged_in}}
+        <div class="text-end">
+            <a href="/login">
+            <button class="btn btn-primary">Login or Register</button></a>
+            </a>
+        </div>
+        {{/unless}}
+      </div>
     </div>
-</header>
+  </header>
 
 <body>
     <!-- Main content -->
@@ -58,7 +61,8 @@
     <footer class="fixed-bottom d-flex justify-content-center align-items-center bg-light">
         <p class="mb-0">&copy; 2024 HarmonyHub. All rights reserved.</p>
     </footer>
-
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 
 </html>

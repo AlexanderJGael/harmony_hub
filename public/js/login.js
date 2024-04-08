@@ -24,8 +24,7 @@ const sendLoginData = (username, password) => {
         if (res.status === 401) {
             return loginError.textContent = 'Invalid username or password';
         }
-
-        window.location.replace('/');
+        window.location.href = '/';
     })
     .catch(error => {
         console.error('Error:', error);
