@@ -85,6 +85,7 @@ exports.userPost = async (req, res, next) => {
     console.error(e);
     return next(e);
   }
+  res.redirect('/');
 };
 
 exports.userValidate = async (req, res, next) => {

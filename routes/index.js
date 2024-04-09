@@ -12,11 +12,10 @@ const homeRoutes = require("./homeRoutes");
 
 // HOME routes
 router.use('/', homeRoutes)
+router.use('/users', userRoutes)
 
 //LOGIN routes
-router.use('/login', loginRoutes)
-router.use('/logout', loginRoutes)
-router.use('/register', userRoutes)
+router.use('/api/login', loginRoutes)
 
 // USER routes
 router.use('/user', profileRoutes)

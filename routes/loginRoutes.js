@@ -41,15 +41,10 @@ router.post("/api/login", async (req, res, next) => {
 
 const loginController = require('../controllers/loginController');
 
+
 //LOGIN routes
 router.get('/', loginController.loginGet);
 router.post('/', loginController.loginPost);
 
-//LOGOUT routes
-router.get('/logout', loginController.logoutGet);
-router.post('/logout', loginController.logoutPost);
-
-router.get('/register', loginController.registerGet);
-router.post('/register', loginController.registerPost);
 
 module.exports = router;
