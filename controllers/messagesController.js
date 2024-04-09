@@ -31,11 +31,20 @@ exports.postChat = async (req, res, next) => {
     }
 };
 
-exports.createMessage = async (msg) => {
+exports.createMessage = async (messageData) => {
     try {
-        const message = await Messages.create({ content: msg.content, userId: msg.userId, username: msg.username });
+        const user = await User.findOne({ where: { id: messageData.userId } });
+        const message = await Messages.create({ 
+            content: messageData.content, 
+            clientOffset: messageData.clientOffset,
+            userId: messageData.userId,
+            username: messageData.username,
+            createdAt: new Date(), 
+        })
 
-    } catch (e) {
+        return message;
+    }
+    catch (e) {
         console.error(e);
         throw e;
     }

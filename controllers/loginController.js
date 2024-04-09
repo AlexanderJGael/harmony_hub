@@ -2,12 +2,11 @@ const User = require("../models/User");
 
 exports.homePage = async(req, res, next) => {
     try {
-        const user = req.session.user;
-
         if (!req.session.logged_in) {
             res.redirect("/login");
         }
-
+        
+        const user = req.session.user;
         res.render('homepage', {layout: 'main', logged_in: req.session.logged_in, user: user });
     } catch (e) {
         console.error(e);

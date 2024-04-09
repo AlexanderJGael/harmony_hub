@@ -78,7 +78,6 @@ sequelize.sync().then( async () => {
 
 // Initialize Socket.IO with the HTTP server
 const io = new Server(server, {
-  connectionStateRecovery: {},
   adapter: createAdapter(),
   },
 );

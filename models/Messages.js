@@ -34,6 +34,10 @@ Messages.init(
       allowNull: false,
       defaultValue: DataTypes.NOW,
     },
+    clientOffset: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   },
   {
     sequelize,

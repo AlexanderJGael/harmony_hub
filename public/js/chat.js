@@ -5,6 +5,8 @@ const socket = io({
     auth: {
         serverOffset: 0,
     },
+    ackTimeout: 10000,
+    retries: 3,
 });
 
 const form = $('#chat-form');
@@ -36,7 +38,10 @@ form.on('submit', async (e) => {
       item.textContent = `You: ${message}`;
       messages.append(item);
       window.scrollTo(0, document.body.scrollHeight);
-      socket.emit('chat message', message);
+      const clientOffset = `${socket.id}-${counter++}`
+      
+      socket.emit('chat message', message, clientOffset);
+      
       input.val('');
     } catch (error) {
       displayErrorMessage(error);
@@ -44,11 +49,12 @@ form.on('submit', async (e) => {
     }
 })
 
-socket.on('chat message', (newMessage) => {
+socket.on('chat message', (newMessage, serverOffset) => {
   const item = document.createElement('li');
   item.textContent = `${newMessage.username}: ${newMessage.content}`;
   messages.append(item);
   window.scrollTo(0, document.body.scrollHeight);
+  socket.auth.serverOffset = serverOffset;
 });
 
 socket.on('error', (error) => {
