@@ -1,13 +1,16 @@
 [
     {
+        "title": "Introductions",
         "content": "Welcome to the HarmonyHub Forum! Feel free to start discussions, ask questions, and connect with other musicians.",
         "authorName": "john_doe"
     },
     {
+        "title": "Collaboration Opportunity",
         "content": "Looking for collaborators for a new music project. Any takers?",
         "authorName": "jane_smith"
     },
     {
+        "title": "Music Production Software",
         "content": "What's your favorite music production software and why?",
         "authorName": "emma_wilson"
     }

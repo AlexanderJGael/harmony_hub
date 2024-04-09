@@ -1,7 +1,19 @@
 const express = require("express");
 const router = express.Router();
-const { Blog } = require("../models/");
+const { Blog } = require("../models");
 const withAuth = require("../utils/auth");
+
+router.get('/', async (req, res, next) => {
+    try {
+        const blogData = await Blog.findAll();
+        const blogs = blogData.map((blog) => blog.get({ plain: true }));
+        res.render('blog', { blogs });
+    } catch (err) {
+        console.error(err);
+        next(err);
+    }
+}
+);
 
 router.post("/", withAuth, async (req, res) => {
     try {

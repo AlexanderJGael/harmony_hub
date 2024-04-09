@@ -1,3 +1,6 @@
+const sequelize = require('../config/connection');
+const { Model, DataTypes } = require('sequelize');
+
 const User = require('./User')
 const Blog = require("./Blog");
 const Forum = require("./Forum");

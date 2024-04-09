@@ -68,7 +68,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Mount routes
 app.use(routes);
 
-sequelize.sync().then( async () => {
+sequelize.sync({ force: true }).then( async () => {
   // Synchronize the session store
   const SequelizeStore = require('connect-session-sequelize')(session.Store);
   const sequelize = require('./config/connection');

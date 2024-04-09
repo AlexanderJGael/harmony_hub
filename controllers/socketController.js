@@ -1,6 +1,5 @@
-const { Messages, User } = require('../models');
-const { messagesController } = require('./');
 const { Op } = require('sequelize');
+const { Messages } = require('../models');
 
 
 const socketController = (io) => {

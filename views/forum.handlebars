@@ -5,9 +5,9 @@
             <ul class="list-group mb-3">
                 {{#each forumPosts}}
                     <li class="list-group-item">
-                        <h3 class="mb-1">{{this.title}}</h3>
-                        <p class="mb-1"><strong>Author:</strong> {{this.author}}</p>
-                        <p class="mb-1">{{this.content}}</p>
+                        <h3 class="mb-1">{{forumPosts.title}}</h3>
+                        <p class="mb-1"><strong>Author:</strong> {{forumPosts.author}}</p>
+                        <p class="mb-1">{{forumPosts.content}}</p>
                     </li>
                 {{/each}}
             </ul>
