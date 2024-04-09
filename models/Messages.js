@@ -18,14 +18,14 @@ Messages.init(
     userId: {
       type: DataTypes.UUID,
       references: {
-        model: 'User',
+        model: 'user',
         key: 'id',
       },
     },
     username: {
       type: DataTypes.STRING,
       references: {
-        model: 'User',
+        model: 'user',
         key: 'username',
       }
     },

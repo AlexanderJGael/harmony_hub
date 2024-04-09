@@ -19,7 +19,7 @@ Forum.init(
       type: DataTypes.STRING,
       allowNull: false,
       references: {
-        model: "User",
+        model: "user",
         key: "username",
       },
     },
@@ -27,7 +27,7 @@ Forum.init(
       type: DataTypes.UUID,
       allowNull: false,
       references: {
-        model: "User",
+        model: "user",
         key: "id",
       },
     },

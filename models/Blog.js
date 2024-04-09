@@ -22,7 +22,7 @@ Blog.init(
             type: DataTypes.UUID,
             allowNull: false,
             references: {
-                model: "User",
+                model: "user",
                 key: "id",
             },
         },
@@ -30,7 +30,7 @@ Blog.init(
             type: DataTypes.STRING,
             allowNull: false,
             references: {
-                model: "User",
+                model: "user",
                 key: "username",
             },
         },

@@ -11,6 +11,8 @@ const seedDatabase = async (userData, forumData, blogData) => {
     await Forum.sync();
     await Profile.sync();
 
+    sequelize.sync({ force: true });
+
 
     await User.bulkCreate(userData, {
       updateOnDuplicate: ["username", "id"],
