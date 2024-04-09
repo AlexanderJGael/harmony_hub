@@ -14,7 +14,7 @@ const createTables = async () => {
     await Forum.sync();
     await Profile.sync();
 
-    await sequelize.sync({ force: true });
+    await sequelize.sync();
     
     console.log("Tables have been created");
 };
