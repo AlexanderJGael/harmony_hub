@@ -1,6 +1,6 @@
 'use strict';
 
-const { User, Messages, Blog, Forum, Profile } = require('../');
+const { User, Messages, Blog, Forum, Profile } = require('../models/');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {

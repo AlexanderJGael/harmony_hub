@@ -7,6 +7,18 @@ const Forum = require("./Forum");
 const Messages = require("./Messages");
 const Profile = require("./Profile");
 
+const createTables = async () => {
+    await User.sync();
+    await Messages.sync();
+    await Blog.sync();
+    await Forum.sync();
+    await Profile.sync();
+    
+    console.log("Tables have been created");
+};
+
+createTables();
+
 User.hasMany(Messages, {
     foreignKey: "senderId",
     onDelete: "CASCADE",
