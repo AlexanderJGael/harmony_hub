@@ -10,65 +10,45 @@ const socket = io({
 const form = $('#chat-form');
 const input = $('#chat-input');
 const messages = $('#chat-messages');
-const userData = $('chat-container').dataset.user;
-const user = JSON.parse(userData);
-const msg = $('#chat-input').val();
 
 
-const displayErrorMessage = (message) =>  {
+const displayErrorMessage = (error) =>  {
   const item = document.createElement('li');
   item.className = "d-flex text-start p-2";
   const p = document.createElement('p');
   p.className = "m-2 text-danger";
-  p.textContent = `Error: ${message}`;
+  p.textContent = $(error).text();
   item.append(p);
   messages.append(item);
   window.scrollTo(0, document.body.scrollHeight);
 };
 
-const postMessage = async (user, msg) => {
-  try {
-    const newMessage = await Messages.create({ content: msg, userId: user.id, userName: user.username });
-    return newMessage;
-  } catch (e) {
-    console.error(e);
-    throw e;
-  }
-};
-
-/* socket.on('connect', () => {
-  socket.emit('request chat log');
-}); */
-
-socket.on('disconnect', () => {
-  displayErrorMessage('Connection severed. Please refresh the page.');
-});
-
-socket.on('reconnect', () => {
-  displayErrorMessage('Reconnected to the server.');
-});
-
-
 form.on('submit', async (e) => {
     e.preventDefault();
     const message = input.val();
+    
+    try {
+      if (!message) {
+        return;
+      }
 
-    if (msg) {
       const item = document.createElement('li');
-      item.textContent = `You: ${msg.message}`;
+      item.textContent = `You: ${message}`;
       messages.append(item);
       window.scrollTo(0, document.body.scrollHeight);
-      socket.emit('chat message', msg);
+      socket.emit('chat message', message);
       input.val('');
+    } catch (error) {
+      displayErrorMessage(error);
+      return;
     }
 })
 
-socket.on('chat message', (msg, serverOffset) => {
+socket.on('chat message', (newMessage) => {
   const item = document.createElement('li');
-  item.textContent = msg;
+  item.textContent = `${newMessage.username}: ${newMessage.content}`;
   messages.append(item);
   window.scrollTo(0, document.body.scrollHeight);
-  socket.auth.serverOffset = serverOffset;
 });
 
 socket.on('error', (error) => {

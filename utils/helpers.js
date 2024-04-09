@@ -1,4 +1,4 @@
-const { Messages } = require('../models/');
+/* const { Messages } = require('../models/');
 const User = require('../models/User');
 const { Sequelize } = require('sequelize');
 const bcrypt = require('bcrypt');
@@ -51,4 +51,4 @@ getMessagesByUser: async (userId) => {
       });
       return messages;
   },
-};
+}; */

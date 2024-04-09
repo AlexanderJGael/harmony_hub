@@ -41,11 +41,11 @@ router.post("/api/login", async (req, res, next) => {
 
 const loginController = require('../controllers/loginController');
 
-router.get('/', loginController.homePage);
-
 //LOGIN routes
-router.get('/login', loginController.loginGet);
-router.post('/login', loginController.loginPost);
+router.get('/', loginController.loginGet);
+router.post('/', loginController.loginPost);
+
+//LOGOUT routes
 router.get('/logout', loginController.logoutGet);
 router.post('/logout', loginController.logoutPost);
 

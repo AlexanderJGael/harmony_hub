@@ -7,6 +7,7 @@ const exphbs = require('express-handlebars');
 const sequelize = require('./config/connection');
 const routes = require('./routes')
 const helpers = require('./utils/helpers');
+const { socketController } = require('./controllers');
 
 const { createServer } = require('http');
 const { Server } = require('socket.io');
@@ -79,46 +80,12 @@ sequelize.sync().then( async () => {
 const io = new Server(server, {
   connectionStateRecovery: {},
   adapter: createAdapter(),
+  },
+);
+io.use((socket, next) => {
+  sessionMiddleware(socket.request, {}, next);
 });
-
-// Handle Socket.IO connections
-/*   io.use((socket, next) => {
-  sessionMiddleware(socket.request, socket.request.res || {}, next);
-}); */
-
-io.on('connection', async (socket) => {
-  console.log('A user connected');
-  socket.on('disconnect', () => {
-    console.log('User disconnected');
-  });
-
-  socket.on('chat message', async (msg) => {
-    console.log('Message received:', msg);
-    try {
-    const message = await helpers.createMessage(msg);
-    // Only broadcast the most recently created message
-    socket.broadcast.emit('chat message', msg, message.id);
-    console.log('Message created');
-    } catch (e) {
-    console.error(e);
-    socket.emit('chat message', 'An error occurred while creating the message');
-    return;
-    }
-  });
-
-  if (!socket.recovered) {
-    // if the connection state recovery was not successful
-    try {
-    const messages = await helpers.getMessagesAfterId({ id: 0 });
-    messages.forEach(message => {
-      socket.broadcast.emit('chat message', message.content, message.id);
-    });
-    } catch (e) {
-      console.error(e);
-      socket.emit('chat message', 'An error occurred while fetching the chat log');
-    }
-  };
-});
+socketController(io);
 
 // Define the port number
 const PORT = process.env.PORT || 3001;

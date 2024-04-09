@@ -21,16 +21,11 @@ exports.getChat = (req, res, next) => {
 exports.postChat = async (req, res, next) => {
     try {
         const { content } = req.body;
-        const user = await User.findOne({ where: { id: req.session.userId } });
-
-        if (!req.session.logged_in) {
-            return res.redirect('/login');
-        }
-
-        const newMessage = await Messages.create({ content, userId: user.id, userName: user.username });
-        res.json(newMessage);
-    }
-    catch (e) {
+        const user = await User.findOne({ where: { id: req.session.userId  } });
+        const message = await Messages.create({ content, userId: req.session.userId });
+        const msg = { content: message.content, username: user.username };
+        res.json(msg);
+    } catch (e) {
         console.error(e);
         return next(e);
     }
@@ -38,7 +33,8 @@ exports.postChat = async (req, res, next) => {
 
 exports.createMessage = async (msg) => {
     try {
-        return await Messages.create(msg);
+        const message = await Messages.create({ content: msg.content, userId: msg.userId, username: msg.username });
+
     } catch (e) {
         console.error(e);
         throw e;
@@ -52,6 +48,79 @@ exports.returnMessages = async () => {
                 model: User,
                 attributes: ['id', 'username']
             }],
+        });
+    } catch (e) {
+        console.error(e);
+        throw e;
+    }
+};
+
+exports.getMessagesById = async (id) => {
+    try {
+        return await Messages.findOne({
+            where: {
+                id: id
+            },
+            include: [{
+                model: User,
+                attributes: ['id', 'username']
+            }],
+        });
+    } catch (e) {
+        console.error(e);
+        throw e;
+    }
+};
+
+exports.updateMessage = async (id, content) => {
+    try {
+        return await Messages.update({ content: content }, {
+            where: {
+                id: id
+            }
+        });
+    } catch (e) {
+        console.error(e);
+        throw e;
+    }
+};
+
+exports.deleteMessage = async (id) => {
+    try {
+        return await Messages.destroy({
+            where: {
+                id: id
+            }
+        });
+    } catch (e) {
+        console.error(e);
+        throw e;
+    }
+};
+
+exports.getMessagesByUser = async (userId) => {
+    try {
+        return await Messages.findAll({
+            where: {
+                userId: userId
+            },
+            include: [{
+                model: User,
+                attributes: ['id', 'username']
+            }],
+        });
+    } catch (e) {
+        console.error(e);
+        throw e;
+    }
+};
+
+exports.deleteMessagesByUser = async (userId) => {
+    try {
+        return await Messages.destroy({
+            where: {
+                userId: userId
+            }
         });
     } catch (e) {
         console.error(e);

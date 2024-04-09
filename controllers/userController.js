@@ -15,6 +15,20 @@ exports.userGet = async (req, res, next) => {
   }
 };
 
+exports.getUserById = async (req, res, next) => {
+  try {
+    const user = await User.findOne({ where: { id: req.params.id } });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.status(200).json(user);
+  } catch (e) {
+    console.error(e);
+    return next(e);
+  }
+};
+
 exports.updateUserProfile = async (req, res) => {
   try {
     const { username, email, aboutMe } = req.body;

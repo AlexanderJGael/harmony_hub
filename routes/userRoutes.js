@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { User } = require("../models")
 const userController = require('../controllers/userController');
-const profileController = require('../controllers/profileController');
+
 
 // multiple users
 router.get('/', userController.userList);
