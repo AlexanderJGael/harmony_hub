@@ -5,17 +5,9 @@ const forumData = require("./forumData.json");
 const blogData = require("./blogData.json");
 
 const seedDatabase = async (userData, forumData, blogData) => {
-    await User.sync();
-    await Messages.sync();
-    await Blog.sync();
-    await Forum.sync();
-    await Profile.sync();
-
-    sequelize.sync({ force: true });
-
+    await sequelize.sync();
 
     await User.bulkCreate(userData, {
-      updateOnDuplicate: ["username", "id"],
       individualHooks: true,
       returning: true,
     });

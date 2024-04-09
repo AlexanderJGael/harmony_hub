@@ -13,6 +13,8 @@ const createTables = async () => {
     await Blog.sync();
     await Forum.sync();
     await Profile.sync();
+
+    await sequelize.sync({ force: true });
     
     console.log("Tables have been created");
 };
@@ -41,18 +43,22 @@ User.hasOne(Profile, {
 
 Blog.belongsTo(User, {
     foreignKey: "authorId",
+    onDelete: "CASCADE",
 });
 
 Forum.belongsTo(User, {
     foreignKey: "authorId",
+    onDelete: "CASCADE",
 });
 
 Messages.belongsTo(User, {
     foreignKey: "senderId",
+    onDelete: "CASCADE",
 });
 
 Profile.belongsTo(User, {
     foreignKey: "userId",
+    onDelete: "CASCADE",
 });
 
 module.exports = { User, Messages, Blog, Forum, Profile };

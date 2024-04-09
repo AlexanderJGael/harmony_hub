@@ -42,122 +42,32 @@ module.exports = {
 
     Blog.belongsTo(User, {
       foreignKey: 'userId',
+      onDelete: 'CASCADE',
     });
 
     Forum.belongsTo(User, {
       foreignKey: 'authorId',
+      onDelete: 'CASCADE',
     });
 
     Messages.belongsTo(User, {
       foreignKey: 'userId',
+      onDelete: 'CASCADE',
     });
 
     Profile.belongsTo(User, {
       foreignKey: 'userId',
+      onDelete: 'CASCADE',
     });
 
-    await queryInterface.addConstraint('Messages', {
-      fields: ['userId'],
-      type: 'foreign key',
-      name: 'fk_messages_userId',
-      references: {
-        table: 'User',
-        field: 'id',
-      },
-      onDelete: 'cascade',
-      onUpdate: 'cascade',
-    });
-
-    await queryInterface.addConstraint('Messages', {
-      fields: ['username'],
-      type: 'foreign key',
-      name: 'fk_messages_username',
-      references: {
-        table: 'User',
-        field: 'username',
-      },
-      onDelete: 'cascade',
-      onUpdate: 'cascade',
-    });
-
-    await queryInterface.addConstraint('Blog', {
-      fields: ['userId'],
-      type: 'foreign key',
-      name: 'fk_blog_userId',
-      references: {
-        table: 'User',
-        field: 'id',
-      },
-      onDelete: 'cascade',
-      onUpdate: 'cascade',
-    });
-
-    await queryInterface.addConstraint('Blog', {
-      fields: ['username'],
-      type: 'foreign key',
-      name: 'fk_blog_username',
-      references: {
-        table: 'User',
-        field: 'username',
-      },
-      onDelete: 'cascade',
-      onUpdate: 'cascade',
-    });
-
-    await queryInterface.addConstraint('Forum', {
-      fields: ['authorId'],
-      type: 'foreign key',
-      name: 'fk_forum_authorId',
-      references: {
-        table: 'User',
-        field: 'id',
-      },
-      onDelete: 'cascade',
-      onUpdate: 'cascade',
-    });
-
-    await queryInterface.addConstraint('Forum', {
-      fields: ['authorName'],
-      type: 'foreign key',
-      name: 'fk_forum_authorName',
-      references: {
-        table: 'User',
-        field: 'username',
-      },
-      onDelete: 'cascade',
-      onUpdate: 'cascade',
-    });
-
-    await queryInterface.addConstraint('Profile', {
-      fields: ['userId'],
-      type: 'foreign key',
-      name: 'fk_profile_userId',
-      references: {
-        table: 'User',
-        field: 'id',
-      },
-      onDelete: 'cascade',
-      onUpdate: 'cascade',
-    });
-
-    await queryInterface.addConstraint('Profile', {
-      fields: ['username'],
-      type: 'foreign key',
-      name: 'fk_profile_username',
-      references: {
-        table: 'User',
-        field: 'username',
-      },
-      onDelete: 'cascade',
-      onUpdate: 'cascade',
-    });
+    
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.dropTable('User');
-    await queryInterface.dropTable('Messages');
-    await queryInterface.dropTable('Blog');
-    await queryInterface.dropTable('Forum');
-    await queryInterface.dropTable('Profile');
+    await queryInterface.dropTable('blog');
+    await queryInterface.dropTable('messages');
+    await queryInterface.dropTable('forum');
+    await queryInterface.dropTable('profile');
+    await queryInterface.dropTable('user');
   },
 };
