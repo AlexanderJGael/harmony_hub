@@ -7,8 +7,8 @@ const profileData = require("./profileData.json");
 const messageData = require("./messageData.json");
 const { Sequelize } = require('sequelize');
 
-const seedDatabase = async (userData, forumData, blogData) => {
-    await sequelize.sync({ force: false })
+const seedDatabase = async (userData, forumData, blogData, profileData, messageData) => {
+    await sequelize.sync({ force: true })
 
     for (const user of userData) {
       try {
@@ -22,11 +22,8 @@ const seedDatabase = async (userData, forumData, blogData) => {
 
     for (const forum of forumData) {
       try {
-        const author = await User.findOne({ where: { username: forum.authorName } });
-        await Forum.create({
-          ...forum,
-          authorId: author.id
-        });
+        const forumId = await User.findOne({ where: { username: forum.authorName } });
+        await Forum.create({ ...forum, authorId: forumId.id });
       } catch (e) {
         if (e.name !== 'SequelizeUniqueConstraintError') {
           throw e;
@@ -36,11 +33,8 @@ const seedDatabase = async (userData, forumData, blogData) => {
 
     for (const blog of blogData) {
       try {
-        const author = await User.findOne({ where: { username: blog.authorName } });
-        await Blog.create({
-          ...blog,
-          authorId: author.id
-        });
+        const blogId = await User.findOne({ where: { username: blog.authorName } });
+        await Blog.create({ ...blog, authorId: blogId.id });
       } catch (e) {
         if (e.name !== 'SequelizeUniqueConstraintError') {
           throw e;
@@ -50,11 +44,8 @@ const seedDatabase = async (userData, forumData, blogData) => {
 
     for (const profile of profileData) {
       try {
-        const user = await User.findOne({ where: { username: profile.username } });
-        await Profile.create({
-          ...profile,
-          userId: user.id,
-        });
+        const profileId = await User.findOne({ where: { username: profile.username } });
+        await Profile.create({ ...profile, userId: profileId.id });
       } catch (e) {
         if (e.name !== 'SequelizeUniqueConstraintError') {
           throw e;
@@ -64,11 +55,8 @@ const seedDatabase = async (userData, forumData, blogData) => {
 
     for (const message of messageData) {
       try {
-        const sender = await User.findOne({ where: { username: message.senderName } });
-        await Messages.create({
-          ...message,
-          userId: sender.id
-        });
+        const messageId = await User.findOne({ where: { username: message.username } });
+        await Messages.create({ ...message, userId: messageId.id });
       } catch (e) {
         if (e.name !== 'SequelizeUniqueConstraintError') {
           throw e;
@@ -80,4 +68,4 @@ const seedDatabase = async (userData, forumData, blogData) => {
     process.exit(0);
   };
 
-seedDatabase(userData, forumData, blogData);
+seedDatabase(userData, forumData, blogData, profileData, messageData);

@@ -17,6 +17,7 @@ Messages.init(
     },
     userId: {
       type: DataTypes.UUID,
+      allowNull: false,
       references: {
         model: 'user',
         key: 'id',
@@ -24,6 +25,7 @@ Messages.init(
     },
     username: {
       type: DataTypes.STRING,
+      allowNull: false,
       references: {
         model: 'user',
         key: 'username',
@@ -37,6 +39,7 @@ Messages.init(
     clientOffset: {
       type: DataTypes.STRING,
       allowNull: false,
+      defaultValue: "0",
     },
   },
   {

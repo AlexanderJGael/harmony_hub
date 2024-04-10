@@ -1,17 +1,17 @@
 
 [
     {
-        "username": "john_doe",
-        "bio": "My name is John Doe, and I love programming"
+        "bio": "My name is John Doe, and I love programming",
+        "username": "john_doe"
     },
 
     {
-        "username": "jane_smith",
-        "bio": "My name is Jane Smith, and I love music!"
+        "bio": "My name is Jane Smith, and I love music!",
+        "username": "jane_smith"
     },
 
     {
-        "username": "emma_wilson",
-        "bio": "My name is Emma Wilson, and I love reading books"
+        "bio": "My name is Emma Wilson, and I love reading books",
+        "username": "emma_wilson"
     }
 ]

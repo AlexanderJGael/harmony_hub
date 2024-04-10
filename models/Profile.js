@@ -25,6 +25,7 @@ Profile.init(
         },
         userId: {
             type: DataTypes.UUID,
+            allowNull: false,
             references: {
                 model: 'user',
                 key: 'id',

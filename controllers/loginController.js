@@ -1,4 +1,4 @@
-const User = require("../models/User");
+const { User, Profile } = require("../models");
 
 exports.homePage = async(req, res, next) => {
     try {
@@ -86,9 +86,11 @@ exports.loginPost = async (req, res, next) => {
             return res.status(401).send({ message: "Invalid password"});
         };
 
+        const profile = await Profile.findOne({where: {userId: user.id}});
+
         req.session.save(() => {
             req.session.logged_in = true;
-            req.session.user = { id: user.id, username: user.username };
+            req.session.user = { id: user.id, username: user.username, profilePic: profile.profilePic };
             res.redirect("/");
         });
     }
