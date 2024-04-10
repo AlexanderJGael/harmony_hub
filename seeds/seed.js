@@ -3,6 +3,8 @@ const { User, Messages, Profile, Forum, Blog } = require('../models');
 const userData = require("./userData.json");
 const forumData = require("./forumData.json");
 const blogData = require("./blogData.json");
+const profileData = require("./profileData.json");
+const messageData = require("./messageData.json");
 const { Sequelize } = require('sequelize');
 
 const seedDatabase = async (userData, forumData, blogData) => {
