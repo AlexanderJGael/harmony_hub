@@ -31,7 +31,7 @@ Profile.init(
                 key: 'id',
             },
         },
-        profielPic: {
+        profilePic: {
             type: DataTypes.STRING,
             allowNull: false,
             defaultValue: 'https://via.placeholder.com/150',
