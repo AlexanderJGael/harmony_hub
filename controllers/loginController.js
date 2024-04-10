@@ -50,7 +50,7 @@ exports.registerPost = async(req, res, next) => {
 
         const user = await User.create({ username, email, password });
 
-        req.session.save(() => {
+        await req.session.save(() => {
             req.session.logged_in = true;
             req.session.user = user;
             res.redirect("/");
@@ -121,6 +121,8 @@ exports.loginPost = async (req, res, next) => {
 exports.logoutGet = async(req, res, next) => {
     try {
         req.session.destroy(() => {
+            req.session.logged_in = false;
+            req.session.user_id = null;
             res.redirect("/");
         });
     } catch (e) {
@@ -132,6 +134,8 @@ exports.logoutGet = async(req, res, next) => {
 exports.logoutPost = async(req, res, next) => {
     try {
         req.session.destroy(() => {
+            req.session.logged_in = false;
+            req.session.user_id = null;
             res.redirect("/");
         });
     } catch (e) {

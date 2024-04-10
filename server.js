@@ -3,6 +3,8 @@ const dotenv = require('dotenv');
 const path = require('path');
 const express = require('express');
 const session = require('express-session');
+const RedisStore = require('connect-redis')(session);
+const redis = require('redis');
 const exphbs = require('express-handlebars');
 const sequelize = require('./config/connection');
 const routes = require('./routes')
@@ -41,6 +43,10 @@ const server = createServer(app);
 
 // Set up session middleware
 const sessionMiddleware = session({
+  store: new RedisStore({ client: redis.createClient({
+    url: process.env.REDIS_URL,
+  }) 
+}),
   secret: process.env.SESSION_SECRET || 'Super secret secret',
   resave: false,
   saveUninitialized: true,
