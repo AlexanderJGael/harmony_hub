@@ -27,7 +27,7 @@ Messages.init(
       references: {
         model: 'user',
         key: 'username',
-      }
+      }, 
     },
     createdAt: {
       type: DataTypes.DATE,

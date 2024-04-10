@@ -46,6 +46,34 @@ const seedDatabase = async (userData, forumData, blogData) => {
       }
     }
 
+    for (const profile of profileData) {
+      try {
+        const user = await User.findOne({ where: { username: profile.username } });
+        await Profile.create({
+          ...profile,
+          userId: user.id,
+        });
+      } catch (e) {
+        if (e.name !== 'SequelizeUniqueConstraintError') {
+          throw e;
+        }
+      }
+    }
+
+    for (const message of messageData) {
+      try {
+        const sender = await User.findOne({ where: { username: message.senderName } });
+        await Messages.create({
+          ...message,
+          userId: sender.id
+        });
+      } catch (e) {
+        if (e.name !== 'SequelizeUniqueConstraintError') {
+          throw e;
+        }
+      }
+    }
+
     console.log("Seeding complete!");
     process.exit(0);
   };

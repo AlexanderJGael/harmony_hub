@@ -13,18 +13,27 @@ Profile.init(
         },
         bio: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         },
-        user_id: {
+        username: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            references: {
+                model: 'user',
+                key: 'username',
+            },
+        },
+        userId: {
             type: DataTypes.UUID,
             references: {
                 model: 'user',
                 key: 'id',
             },
         },
-        profile_pic: {
+        profielPic: {
             type: DataTypes.STRING,
             allowNull: false,
+            defaultValue: 'https://via.placeholder.com/150',
         },
         createdAt: {
             type: DataTypes.DATE,

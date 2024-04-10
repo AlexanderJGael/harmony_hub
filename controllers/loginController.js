@@ -2,12 +2,14 @@ const User = require("../models/User");
 
 exports.homePage = async(req, res, next) => {
     try {
-        if (!req.session.logged_in) {
-            res.redirect("/login");
+        const logged_in = req.session.logged_in;
+        
+        if (!logged_in) {
+            res.render("login");
         }
         
         const user = req.session.user;
-        res.render('homepage', {layout: 'main', logged_in: req.session.logged_in, user: user });
+        res.render('homepage', {layout: 'main', logged_in: logged_in, user: user });
     } catch (e) {
         console.error(e);
         return next(e);
@@ -37,9 +39,9 @@ exports.registerPost = async(req, res, next) => {
             return res.status(400).json({ message: "Password must be at least 8 characters long" });
         }
 
-        const userExists = await User.findOne({ where: { email } });
+        const userExists = await User.findOne({ where: { username } });
         if (userExists) {
-            return res.status(409).json({ message: "User already exists" });
+            res.res.status(409).json({ message: "Username already exists" });
         }
 
         const emailExists = await User.findOne({ where: { email } });
@@ -50,9 +52,9 @@ exports.registerPost = async(req, res, next) => {
 
         const user = await User.create({ username, email, password });
 
-        await req.session.save(() => {
+        req.session.save(() => {
             req.session.logged_in = true;
-            req.session.user = user;
+            req.session.user = { id: user.id, username: user.username };
             res.redirect("/");
         });
     } catch (e) {
@@ -73,7 +75,8 @@ exports.loginGet = async (req, res, next) => {
 exports.loginPost = async (req, res, next) => {
     try {
         const { username, password } = req.body;
-        const user = await User.findOne({ where: { username } });
+        const user = await User.findOne({where: {username: username}});
+
         if (!user) {
             return res.status(404).send({ message: "User not found" });
         }
@@ -81,11 +84,11 @@ exports.loginPost = async (req, res, next) => {
         const validPassword = await user.checkPassword(password);
         if (!validPassword) {
             return res.status(401).send({ message: "Invalid password"});
-        }
+        };
 
         req.session.save(() => {
             req.session.logged_in = true;
-            req.session.user = user;
+            req.session.user = { id: user.id, username: user.username };
             res.redirect("/");
         });
     }
@@ -120,26 +123,29 @@ exports.loginPost = async (req, res, next) => {
 
 exports.logoutGet = async(req, res, next) => {
     try {
+        const logged_in = req.session.logged_in;
+        const user = req.session.user;
+
         req.session.destroy(() => {
-            req.session.logged_in = false;
-            req.session.user_id = null;
-            res.redirect("/");
+            logged_in
+            user
         });
     } catch (e) {
         console.error(e);
         return next(e);
     };
+    res.redirect("/");
 };
 
 exports.logoutPost = async(req, res, next) => {
     try {
         req.session.destroy(() => {
-            req.session.logged_in = false;
-            req.session.user_id = null;
-            res.redirect("/");
+            req.session.logged_in
+            req.session.user
         });
     } catch (e) {
         console.error(e);
         return next(e);
     };
+    res.redirect("/");
 };

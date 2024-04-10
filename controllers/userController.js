@@ -67,7 +67,7 @@ exports.userPost = async (req, res, next) => {
     req.session.save(() => {
       req.session.userId = newUser.id;
       req.session.logged_in = true;
-
+      
       // mkake post to /api/users/:id
       fetch(`/api/users/${newUser.id}`, {
         method: 'POST',
@@ -80,12 +80,12 @@ exports.userPost = async (req, res, next) => {
       .catch(e => { console.log(data) });
       
       res.status(200).json({ message: 'User created successfully' });
-      }) 
+    }) 
+    res.redirect('/');
   } catch (e) {
     console.error(e);
     return next(e);
   }
-  res.redirect('/');
 };
 
 exports.userValidate = async (req, res, next) => {

@@ -19,6 +19,7 @@ router.delete("/messages/:id", messagesController.deleteMessage);
 // Login api routes
 router.post('/register', loginController.registerPost);
 router.post('/login', loginController.loginPost);
-router.get('/logout', loginController.logoutPost);
+router.get('/logout', loginController.logoutGet);
+router.post('/logout', loginController.logoutPost);
 
 module.exports = router;

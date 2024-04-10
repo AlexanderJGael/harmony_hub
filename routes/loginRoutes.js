@@ -43,8 +43,7 @@ const loginController = require('../controllers/loginController');
 
 
 //LOGIN routes
-router.get('/', loginController.loginGet);
+router.get('/', loginController.logoutGet);
 router.post('/', loginController.loginPost);
-
 
 module.exports = router;

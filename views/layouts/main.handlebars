@@ -31,15 +31,15 @@
         {{#if logged_in}}
         <div class="dropdown text-end">
             <a href="#" class="d-block link-dark text-light text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src={{user.profiilepicture}} alt="mdo" width="32" height="32" class="rounded-circle">
+                <img src={{user.profilePic}} alt="mdo" width="32" height="32" class="rounded-circle">
             </a>
             <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
                 <li><a class="dropdown-item hover-none" >Hi, {{user.username}}!</a></li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a href="/profile" class="dropdown-item">Profile</a></li>
+                <li><a href="/user/:id" class="dropdown-item">Profile</a></li>
                 <li><a href="/chat" class="dropdown-item">Chat</a></li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a href="/logout" class="dropdown-item" href="#">Sign out</a></li>
+                <li><a href="/api/logout" class="dropdown-item" href="#">Sign out</a></li>
             </ul>
         </div>
         {{/if}}

@@ -14,9 +14,6 @@ const homeRoutes = require("./homeRoutes");
 router.use('/', homeRoutes)
 router.use('/users', userRoutes)
 
-//LOGIN routes
-router.use('/api/login', loginRoutes)
-
 // USER routes
 router.use('/user', profileRoutes)
 
@@ -24,7 +21,7 @@ router.use('/user', profileRoutes)
 router.use('/chat', messageRoutes)
 
 // PROFILE routes
-router.use('/profile', profileRoutes)
+router.use('/user/profile', profileRoutes)
 
 // BLOG routes
 router.use('/blog', blogRoutes)

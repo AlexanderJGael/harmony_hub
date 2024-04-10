@@ -11,13 +11,12 @@ exports.profileGet =  async (req, res, next) => {
     }
 };
 
-
 // POST create new user profile
 exports.profileCreate = async (req, res, next) => {
     try {
         const { username, email, password } = req.body;
         const newUser = await User.create(
-            { username, email, password, profilePicture: 'placeholder.jpg' }
+            { username, email, password, profilePicture: profilePic }
             );
             res.json(newUser);
         } catch (e) {
